@@ -241,9 +241,21 @@
       ctx.fillRect(x, gy - 3, 2, 4);
       ctx.fillRect(x + 3, gy - 2, 2, 3);
     }
-    // zona d'impatto (terra battuta attorno alla base): bordo dithered + nucleo pieno
-    U.pixelEllipse(ctx, CX, gy + 6, R + 40, 14, "#6e5540", { dither: true });
-    U.pixelEllipse(ctx, CX, gy + 6, R + 30, 10, "#6e5540");
+    // zona d'impatto (terra battuta attorno alla base): pre-renderizzata,
+    // il dither espanderebbe in migliaia di fillRect a ogni frame
+    if (!impactCache) buildImpact();
+    ctx.drawImage(impactCache, CX - (R + 40) - 1, gy + 6 - 15);
+  }
+
+  // cache della zona d'impatto (bordo dithered + nucleo pieno)
+  let impactCache = null;
+  function buildImpact() {
+    const rx = R + 40, ry = 14;
+    const c = U.makeCanvas(rx * 2 + 2, ry * 2 + 2);
+    const g = c.getContext("2d");
+    U.pixelEllipse(g, rx + 1, ry + 1, rx, ry, "#6e5540", { dither: true });
+    U.pixelEllipse(g, rx + 1, ry + 1, R + 30, 10, "#6e5540");
+    impactCache = c;
   }
 
   // ---- pila di corpi ----
