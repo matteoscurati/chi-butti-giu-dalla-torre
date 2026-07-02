@@ -84,14 +84,18 @@
   // shockwave ring che si espande e sfuma dal punto d'impatto (mondo)
   FX.shockwave = function (x, y, opts) {
     opts = opts || {};
+    // "R,G,B" -> 3 tinte opache (chiaro/medio/scuro), calcolate una volta allo spawn
+    const ch = (opts.color || "255,255,255").split(",").map((v) => parseInt(v, 10) || 0);
+    const shade = (m) =>
+      "rgb(" + Math.round(ch[0] * m) + "," + Math.round(ch[1] * m) + "," + Math.round(ch[2] * m) + ")";
     shocks.push({
       x, y, t: 0,
       life: opts.life || 0.4,
       maxR: opts.maxR || 46,
       r0: opts.r0 || 4,
-      color: opts.color || "255,255,255",
       width: opts.width || 3,
       squash: opts.squash || 1,          // 1 = cerchio, <1 = ellisse a terra
+      ramp: [shade(1.0), shade(0.8), shade(0.6)],
     });
   };
 
@@ -210,22 +214,15 @@
       ctx.fillRect(Math.round(p.x), Math.round(p.y), p.size, p.size);
     }
     ctx.globalAlpha = 1;
-    // shockwave ring (additivo)
+    // shockwave ring (anello pixel: colore solido a gradini, niente alpha/lighter)
     for (const s of shocks) {
       const k = s.t / s.life;
-      const r = U.lerp(s.r0, s.maxR, U.easeOutCubic(k));
-      const a = (1 - k) * 0.7;
-      ctx.save();
-      ctx.globalCompositeOperation = "lighter";
-      ctx.globalAlpha = a;
-      ctx.strokeStyle = "rgba(" + s.color + ",1)";
-      ctx.lineWidth = Math.max(1, s.width * (1 - k));
-      ctx.beginPath();
-      ctx.ellipse(Math.round(s.x), Math.round(s.y), r, r * s.squash, 0, 0, Math.PI * 2);
-      ctx.stroke();
-      ctx.restore();
+      const r  = Math.round(U.lerp(s.r0, s.maxR, U.easeOutCubic(k)));
+      const ry = Math.max(1, Math.round(r * s.squash));
+      const phase = k < 0.45 ? 0 : (k < 0.8 ? 1 : 2);
+      const th = phase === 0 ? s.width : Math.max(2, s.width - 1);
+      U.pixelEllipse(ctx, s.x, s.y, r, ry, s.ramp[phase], { thickness: th, dither: phase === 2 });
     }
-    ctx.globalAlpha = 1;
     for (const s of texts) {
       const k = s.t / s.life;
       let scale = 1;

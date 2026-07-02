@@ -1,10 +1,11 @@
 # Chi butti giù dalla torre?
 
 Picchiaduro satirico **king of the hill** in pixel art, stile arcade anni '90
-(Street Fighter II). 81 figure della storia pubblica italiana (36 donne) — dal
-fascismo a oggi, Michela Murgia inclusa — si sfidano in cima a una torre
-medievale: clicca chi buttare giù, il superstite affronta lo sfidante successivo
-finché resta un solo vincitore. Ogni personaggio ha un **abito coerente** con la
+(Street Fighter II). Roster di 81 figure della storia pubblica italiana (36
+donne) — dal fascismo a oggi, Michela Murgia inclusa. Ogni partita: Murgia +
+**15 sfidanti estratti a caso** (15 duelli); clicca chi buttare giù, il
+superstite affronta lo sfidante successivo finché resta un solo vincitore, e
+ogni rivincita ripesca sfidanti nuovi. Ogni personaggio ha un **abito coerente** con la
 sua storia (camicia nera, tuta spaziale, maglia da ciclista, tailleur…) e urla
 una **frase biografica** mentre precipita.
 
@@ -34,7 +35,7 @@ Qualsiasi server statico va bene (`npx serve`, ecc.).
   urlando la sua frase biografica, con onomatopea; il superstite resta in cima e
   affronta il prossimo sfidante che sbuca dalla botola.
 - La **classifica** a destra si riempie in ordine inverso di eliminazione: il
-  primo buttato giù finisce 81°, il vincitore finale è 1° (ed esulta saltellando).
+  primo buttato giù finisce 16°, il vincitore finale è 1° (ed esulta saltellando).
 - Un clic durante le animazioni le **salta**. In basso: pulsante **AUDIO** e link
   ai **CREDITI**.
 

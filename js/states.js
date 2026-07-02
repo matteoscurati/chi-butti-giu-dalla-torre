@@ -106,7 +106,7 @@
     st.falling = {
       id: v.char.id, char: v.char,
       x: v.x, y: cfg.TOP_Y - SH / 2,
-      vx: outDir * U.rand(115, 155),
+      vx: outDir * U.rand(130, 175),
       vy: -160,
       angle: 0, omega: U.sign() * U.rand(4.5, 9),
       facing: v.facing,
@@ -236,7 +236,7 @@
         if (st.sweatT > 0.13) {                 // sudore accelerato sul bersaglio
           st.sweatT = 0;
           const f = st.hoverSide === "left" ? st.left : st.right;
-          if (f) FX.spawnSweat(f.x + U.rand(-8, 8), f.y - SH + 4);
+          if (f) FX.spawnSweat(f.x + U.rand(-10, 10), f.y - SH + 4);
         }
       }
       if (Game.flags.auto && st.t > 0.25) doPick(Math.random() < 0.5 ? "left" : "right");
@@ -245,12 +245,12 @@
       const dur = 0.16;
       const p = U.clamp(st.t / dur, 0, 1);
       const s = st.push.survivor;
-      s.x = st.push.sBaseX + st.push.dir * 10 * Math.sin(p * Math.PI);
+      s.x = st.push.sBaseX + st.push.dir * 13 * Math.sin(p * Math.PI);
       // contatto della spinta: hit-stop + flash + shockwave + kick orizzontale
       if (p >= 0.5 && !st.push.hit) {
         st.push.hit = true;
         const v = st.push.victim;
-        const cx = v.x - st.push.dir * 8, cy = cfg.TOP_Y - SH * 0.55;
+        const cx = v.x - st.push.dir * 10, cy = cfg.TOP_Y - SH * 0.55;
         Game.time.hitStop(0.08);
         FX.flash(0.3, 0.1);
         FX.shockwave(cx, cy, { maxR: 30, life: 0.3, color: "255,240,210", width: 3 });
@@ -316,7 +316,7 @@
 
     if (st.phase === "victory" && st.champion) {
       // vincitore che esulta con saltelli sulla piattaforma
-      const jump = Math.abs(Math.sin(st.t * 5)) * 9;
+      const jump = Math.abs(Math.sin(st.t * 5)) * 12;
       SP.drawBig(ctx, st.champion.char.id, st.champion.x, cfg.TOP_Y - jump, 1, "cheer");
     } else {
       // campione/sfidante in cima (idle), con evidenziazione al hover

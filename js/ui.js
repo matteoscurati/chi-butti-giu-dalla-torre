@@ -148,7 +148,7 @@
     const wc = el.winnerCanvas.getContext("2d");
     wc.imageSmoothingEnabled = false;
     wc.clearRect(0, 0, el.winnerCanvas.width, el.winnerCanvas.height);
-    Game.sprites.drawBig(wc, winner.id, el.winnerCanvas.width / 2, el.winnerCanvas.height - 6, 1.7, "cheer");
+    Game.sprites.drawBig(wc, winner.id, el.winnerCanvas.width / 2, el.winnerCanvas.height - 8, 1.5, "cheer");
     // classifica finale
     el.finalRanking.innerHTML = "";
     ordered.forEach((c, i) => {
