@@ -19,13 +19,14 @@
     H: 600,
     GROUND_Y: 2000,       // y del suolo nel mondo
     TOWER_CX: 240,        // centro torre
-    TOWER_R: 84,          // raggio torre (mezza larghezza)
+    TOWER_R: 100,         // raggio torre (mezza larghezza)
     TOP_Y: 392,           // y dei piedi dei personaggi sulla piattaforma
-    FIGHTER_DX: 52,       // offset orizzontale dei due sfidanti dal centro
+    FIGHTER_DX: 60,       // offset orizzontale dei due sfidanti dal centro
     DUEL_CAM_Y: 40,       // y (alto viewport) durante il duello
     GRAVITY: 1250,        // px/s^2
     FONT: '"Press Start 2P", monospace',
-    TOTAL_ROUNDS: 60,     // 61 personaggi => 60 duelli
+    MATCH_CHALLENGERS: 15, // sfidanti estratti a caso per partita (oltre a Murgia)
+    TOTAL_ROUNDS: 15,     // default, sovrascritto in SM.reset da st.pool.length
   };
 
   // ------- Utility matematiche -------
@@ -85,6 +86,58 @@
     const c = document.createElement("canvas");
     c.width = w; c.height = h;
     return c;
+  };
+
+  // ellisse "pixel" a righe orizzontali intere (stile retro).
+  // opts.thickness: disegna un anello di spessore esatto invece del riempimento pieno.
+  // opts.dither: retinatura a scacchiera 50% (si combina con thickness).
+  U.pixelEllipse = function (g, cx, cy, rx, ry, color, opts) {
+    opts = opts || {};
+    cx = Math.round(cx); cy = Math.round(cy);
+    rx = Math.round(rx); ry = Math.max(1, Math.round(ry));
+    g.fillStyle = color;
+
+    // disegna un segmento orizzontale, pieno o a scacchiera stabile nel mondo
+    function seg(x, y, w) {
+      if (w <= 0) return;
+      if (!opts.dither) { g.fillRect(x, y, w, 1); return; }
+      const off = (x + y) & 1;
+      for (let px = x + off; px < x + w; px += 2) g.fillRect(px, y, 1, 1);
+    }
+
+    const n = opts.thickness;
+    const ring = n > 0 && ry - n > 0;
+    const ryIn = ring ? ry - n : 0, rxIn = ring ? rx - n : 0;
+
+    for (let dy = -ry; dy <= ry; dy++) {
+      const wOut = Math.round(rx * Math.sqrt(Math.max(0, 1 - (dy / ry) * (dy / ry))));
+      if (wOut <= 0) continue;
+      if (!ring) { seg(cx - wOut, cy + dy, wOut * 2); continue; }
+      const inner = Math.abs(dy) < ryIn;
+      const wIn = inner ? Math.round(rxIn * Math.sqrt(Math.max(0, 1 - (dy / ryIn) * (dy / ryIn)))) : 0;
+      if (inner && wIn > 0 && wOut - wIn > 0) {
+        seg(cx - wOut, cy + dy, wOut - wIn);
+        seg(cx + wIn, cy + dy, wOut - wIn);
+      } else {
+        seg(cx - wOut, cy + dy, wOut * 2);   // riga di calotta: nessuna intersezione interna
+      }
+    }
+  };
+
+  // riempimento dither Bayer 2x2 (matrice 0,2 / 3,1); level tipico 0.25/0.5/0.75
+  U.ditherRect = function (g, x, y, w, h, color, level) {
+    x = Math.round(x); y = Math.round(y); w = Math.round(w); h = Math.round(h);
+    const bayer = [[0, 2], [3, 1]];
+    const threshold = level * 4;
+    g.fillStyle = color;
+    for (let py = y; py < y + h; py++) {
+      const row = bayer[py & 1];
+      for (let bit = 0; bit <= 1; bit++) {
+        if (row[bit] >= threshold) continue;
+        let px = x + ((bit - (x & 1) + 2) % 2);
+        for (; px < x + w; px += 2) g.fillRect(px, py, 1, 1);
+      }
+    }
   };
 
   // ------- Palette canonica (unica fonte via CSS :root) -------

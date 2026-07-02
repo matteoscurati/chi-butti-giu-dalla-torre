@@ -6,7 +6,7 @@
 
   let el = {};
   let rankSlots = [];          // rank(1..N) -> <li>
-  let TOTAL = 61;              // ricalcolato da CHARACTERS in buildRanking
+  let TOTAL = 16;              // default (Murgia + MATCH_CHALLENGERS), passato da buildRanking(total)
 
   // callback impostati dalla state machine
   UI.onPick = null;            // (side) => void   side: 'left'|'right'
@@ -50,7 +50,7 @@
       el.muteBtn.textContent = "AUDIO: " + (m ? "OFF" : "ON");
     });
 
-    UI.buildRanking();
+    UI.buildRanking((Game.cfg.MATCH_CHALLENGERS || 15) + 1);
   };
 
   // ---- loading ----
@@ -104,8 +104,8 @@
   };
 
   // ---- classifica ----
-  UI.buildRanking = function () {
-    TOTAL = (window.CHARACTERS || []).length || TOTAL;
+  UI.buildRanking = function (total) {
+    TOTAL = total || TOTAL;
     el.rankingList.innerHTML = "";
     rankSlots = [];
     for (let r = 1; r <= TOTAL; r++) {
@@ -138,7 +138,7 @@
     }
   };
 
-  UI.resetRanking = function () { UI.buildRanking(); };
+  UI.resetRanking = function (total) { UI.buildRanking(total); };
 
   // ---- risultati ----
   UI.showResults = function (winner, ordered) {

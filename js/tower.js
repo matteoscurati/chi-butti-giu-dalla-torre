@@ -218,11 +218,11 @@
   T.addCorpse = function (id, x, facing) {
     const n = T.corpses.length;
     const level = Math.min(n, 40);
-    const px = x == null ? CX + U.rand(-96, 96) : U.clamp(x, CX - 100, CX + 100);
+    const px = x == null ? CX + U.rand(-110, 110) : U.clamp(x, CX - 116, CX + 116);
     T.corpses.push({
       id,
       x: px,
-      y: cfg.GROUND_Y - 3 - level * 1.6 - U.rand(0, 4),
+      y: cfg.GROUND_Y - 3 - level * 2.0 - U.rand(0, 4),
       angle: U.sign() * U.rand(1.35, 1.75),   // ~sdraiato
       facing: facing || U.sign(),
       ft: U.pick([0, 0.15]),                   // varia il frame flail nella pila

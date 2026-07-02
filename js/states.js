@@ -43,9 +43,9 @@
   SM.reset = function () {
     const all = window.CHARACTERS || [];
     const murgia = all.find((c) => c.fixed) || all[0];
-    st.pool = U.shuffle(all.filter((c) => c !== murgia));
-    st.total = all.length;                 // totale personaggi (per classifica dinamica)
-    cfg.TOTAL_ROUNDS = st.pool.length;     // duelli = personaggi - 1
+    st.pool = U.shuffle(all.filter((c) => c !== murgia)).slice(0, cfg.MATCH_CHALLENGERS);
+    st.total = st.pool.length + 1;         // partecipanti in questa partita (Murgia + sfidanti estratti)
+    cfg.TOTAL_ROUNDS = st.pool.length;     // duelli = sfidanti estratti
     st.nextIndex = 0;
     st.champion = makeFighter(murgia, leftX, 1);
     st.challenger = null;
@@ -58,7 +58,7 @@
     if (Game.time) Game.time.clear();
     cam.zoom = 1; cam.zoomTarget = 1; cam.trauma = 0; cam.kickX = 0; cam.kickY = 0;
     Game.tower.corpses.length = 0;
-    UI.resetRanking();
+    UI.resetRanking(st.total);
     UI.hideResults();
     UI.hideBanner();
   };
