@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Chi butti giù dalla torre?</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><text y='14' font-size='14'>🏰</text></svg>" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <div id="app">
+    <!-- Colonna gioco -->
+    <div id="stage">
+      <!-- Nameplate stile Street Fighter -->
+      <div id="hud">
+        <div class="nameplate" id="plate-left" data-side="left">
+          <div class="np-name">—</div>
+          <div class="np-role">—</div>
+        </div>
+        <div id="vs">
+          <span id="vs-text">VS</span>
+          <div id="round-counter">ROUND 1/60</div>
+        </div>
+        <div class="nameplate" id="plate-right" data-side="right">
+          <div class="np-name">—</div>
+          <div class="np-role">—</div>
+        </div>
+      </div>
+
+      <!-- Canvas di gioco -->
+      <div id="canvas-wrap">
+       <!-- #screen: box a scala INTERA del canvas; overlay ancorati a inset:0 -->
+       <div id="screen">
+        <canvas id="game" width="480" height="600"></canvas>
+
+        <!-- Banner "arriva uno sfidante" -->
+        <div id="challenger-banner" class="hidden">
+          <span>ARRIVA UNO SFIDANTE!</span>
+        </div>
+
+        <!-- Schermata titolo -->
+        <div id="title-screen" class="overlay">
+          <div class="title-inner">
+            <h1 class="title-main">CHI BUTTI GIÙ</h1>
+            <h1 class="title-main title-accent">DALLA TORRE?</h1>
+            <p class="title-sub">Storia pubblica italiana · dal fascismo a oggi</p>
+            <div id="loading-row">
+              <div id="loading-bar"><div id="loading-fill"></div></div>
+              <div id="loading-label">CARICAMENTO…</div>
+            </div>
+            <button id="start-btn" class="arcade-btn hidden">CLICCA PER INIZIARE</button>
+            <p class="title-disclaimer">
+              Satira. Nessuna persona è stata davvero buttata giù dalla torre.<br />
+              Volti da Wikimedia Commons — vedi <strong>CREDITS.md</strong>.
+            </p>
+          </div>
+        </div>
+
+        <!-- Schermata vincitore / classifica finale -->
+        <div id="results-screen" class="overlay hidden">
+          <div class="results-inner">
+            <h1 id="winner-title">WINNER</h1>
+            <canvas id="winner-canvas" width="140" height="180"></canvas>
+            <div id="winner-name">—</div>
+            <div id="winner-role">—</div>
+            <h2 class="results-h2">CLASSIFICA FINALE</h2>
+            <ol id="final-ranking"></ol>
+            <button id="rematch-btn" class="arcade-btn">RIVINCITA</button>
+          </div>
+        </div>
+       </div><!-- /#screen -->
+      </div>
+
+      <!-- Barra inferiore -->
+      <div id="footer">
+        <button id="mute-btn" class="mini-btn">AUDIO: ON</button>
+        <span class="footer-note">Clicca chi buttare giù · clic per saltare le animazioni</span>
+        <a id="credits-link" class="mini-btn" href="CREDITS.md" target="_blank" rel="noopener">CREDITI</a>
+      </div>
+    </div>
+
+    <!-- Classifica laterale -->
+    <aside id="ranking-panel">
+      <div class="ranking-header">CLASSIFICA</div>
+      <div class="ranking-sub">Ordine inverso di eliminazione</div>
+      <ol id="ranking-list"></ol>
+    </aside>
+  </div>
+
+  <!-- Script classici (compatibili con file://). Ordine di dipendenza. -->
+  <script src="js/data.js"></script>
+  <script src="js/util.js"></script>
+  <script src="js/audio.js"></script>
+  <script src="js/camera.js"></script>
+  <script src="js/sprites.js"></script>
+  <script src="js/tower.js"></script>
+  <script src="js/fx.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/states.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

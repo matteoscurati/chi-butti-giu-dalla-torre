@@ -1,0 +1,387 @@
+@font-face {
+  font-family: "Press Start 2P";
+  src: url("../assets/fonts/PressStart2P-Regular.ttf") format("truetype");
+  font-display: swap;
+}
+
+:root {
+  /* --- Palette canonica DawnBringer-16 (unica fonte; letta anche dal canvas) --- */
+  --db-black: #140c1c;
+  --db-ink: #0c0812;
+  --db-maroon: #442434;
+  --db-navy: #30346d;
+  --db-slate: #4e4a4e;
+  --db-brown: #854c30;
+  --db-forest: #346524;
+  --db-red: #d04648;     /* ruolo: pericolo / eliminazione */
+  --db-gray: #757161;
+  --db-steel: #597dce;
+  --db-orange: #d27d2c;
+  --db-silver: #8595a1;
+  --db-green: #6daa2c;
+  --db-tan: #d2aa99;
+  --db-cyan: #6dc2ca;
+  --db-gold: #dad45e;    /* ruolo: vincitore / #1 (solo) */
+  --db-white: #deeed6;
+
+  /* --- Ruoli UI (arcade vibrante, coerenti con i ruoli sopra) --- */
+  --bg: #17111f;
+  --bg2: #241634;
+  --panel: #1c1230;
+  --gold: #ffd23f;
+  --gold2: #ff9f1c;
+  --red: #ff2e4c;
+  --blue: #2b8cff;
+  --ink: #0c0812;
+  --text: #f4ecff;
+  --dim: #b9a7d6;
+
+  /* scala intera del canvas (aggiornata da main.js al resize) */
+  --scale: 1;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  height: 100%;
+  background: var(--bg);
+  color: var(--text);
+  font-family: "Press Start 2P", "Courier New", monospace;
+  overflow: hidden;
+}
+
+body {
+  background:
+    radial-gradient(circle at 30% 10%, #2c1c44 0%, transparent 55%),
+    radial-gradient(circle at 80% 90%, #201640 0%, transparent 55%),
+    var(--bg);
+}
+
+/* leggere scanline CRT */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0) 0px,
+    rgba(0, 0, 0, 0) 2px,
+    rgba(0, 0, 0, 0.10) 3px
+  );
+  z-index: 9999;
+  mix-blend-mode: multiply;
+}
+
+#app {
+  height: 100vh;
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  gap: 14px;
+  padding: 12px;
+}
+
+/* ---------------- Stage (colonna gioco) ---------------- */
+#stage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  flex: 1 1 auto;
+  max-width: 760px;
+}
+
+/* ---------------- HUD nameplate ---------------- */
+#hud {
+  width: 100%;
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  gap: 8px;
+  height: 74px;
+}
+
+.nameplate {
+  flex: 1 1 0;
+  max-width: 320px;
+  background: linear-gradient(180deg, var(--gold) 0%, var(--gold2) 100%);
+  color: var(--ink);
+  border: 3px solid var(--ink);
+  border-radius: 4px;
+  padding: 10px 14px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 6px;
+  box-shadow: 0 3px 0 #00000066, inset 0 0 0 2px #ffffff55;
+  transition: transform 0.12s, filter 0.12s, box-shadow 0.12s;
+  overflow: hidden;
+}
+#plate-left { transform: skewX(-8deg); text-align: left; }
+#plate-right { transform: skewX(8deg); text-align: right; }
+#plate-left > *, #plate-right > * { transform: skewX(0deg); }
+#plate-left.unskew, #plate-right.unskew { transform: skewX(0); }
+
+.nameplate .np-name {
+  font-size: 15px;
+  line-height: 1.25;
+  letter-spacing: 0.5px;
+  text-shadow: 1px 1px 0 #ffffff88;
+}
+.nameplate .np-role {
+  font-size: 8px;
+  color: #5a3d00;
+  line-height: 1.3;
+}
+
+.nameplate.candidate {
+  cursor: pointer;
+  filter: brightness(1.08) saturate(1.2);
+  box-shadow: 0 0 0 3px var(--red), 0 3px 0 #00000066, inset 0 0 0 2px #fff8;
+}
+.nameplate.dimmed { filter: brightness(0.72) grayscale(0.3); }
+
+#vs {
+  flex: 0 0 auto;
+  width: 92px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+#vs-text {
+  font-size: 30px;
+  color: var(--red);
+  text-shadow: 2px 2px 0 var(--ink), -1px -1px 0 #fff;
+  animation: vspulse 0.7s infinite alternate;
+}
+@keyframes vspulse {
+  from { transform: scale(1); }
+  to { transform: scale(1.16) rotate(-3deg); }
+}
+#round-counter {
+  font-size: 8px;
+  color: var(--gold);
+  background: #00000066;
+  border: 2px solid var(--gold2);
+  padding: 3px 5px;
+  border-radius: 3px;
+  white-space: nowrap;
+}
+
+/* ---------------- Canvas ---------------- */
+#canvas-wrap {
+  position: relative;
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+/* box a scala intera: dimensioni px calcolate da main.js (fitCanvas).
+   content-box così il canvas riempie ESATTAMENTE 480*scale x 600*scale (pixel-perfect). */
+#screen {
+  position: relative;
+  box-sizing: content-box;
+  width: 480px;
+  height: 600px;
+  background: #0a0713;
+  border: 4px solid #000;
+  box-shadow: 0 0 0 3px #3a2760, 0 8px 30px #000a;
+}
+#game {
+  display: block;
+  width: 100%;
+  height: 100%;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+  cursor: default;
+}
+#game.can-pick { cursor: pointer; }
+
+/* ---------------- Banner sfidante ---------------- */
+#challenger-banner {
+  position: absolute;
+  top: 20%;
+  left: 0;
+  right: 0;
+  text-align: center;
+  pointer-events: none;
+}
+#challenger-banner span {
+  display: inline-block;
+  font-size: 20px;
+  color: #fff;
+  background: var(--red);
+  border: 3px solid #000;
+  padding: 10px 18px;
+  box-shadow: 0 0 0 3px var(--gold), 6px 6px 0 #0008;
+  transform: rotate(-3deg);
+  animation: slamin 0.35s cubic-bezier(0.2, 1.6, 0.4, 1);
+}
+@keyframes slamin {
+  from { transform: rotate(-3deg) scale(3); opacity: 0; }
+  to { transform: rotate(-3deg) scale(1); opacity: 1; }
+}
+
+/* ---------------- Overlay generiche ---------------- */
+.overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(9, 6, 16, 0.86);
+  text-align: center;
+  padding: 18px;
+}
+.hidden { display: none !important; }
+
+.title-inner { max-width: 460px; }
+.title-main {
+  font-size: 30px;
+  line-height: 1.2;
+  color: var(--gold);
+  text-shadow: 3px 3px 0 var(--ink), 5px 5px 0 var(--red);
+  letter-spacing: 1px;
+}
+.title-accent { color: #fff; text-shadow: 3px 3px 0 var(--red), 5px 5px 0 var(--ink); }
+.title-sub { margin-top: 16px; font-size: 9px; color: var(--dim); line-height: 1.5; }
+.title-disclaimer { margin-top: 22px; font-size: 7px; color: #8f7db0; line-height: 1.7; }
+
+#loading-row { margin-top: 24px; }
+#loading-bar {
+  width: 260px;
+  height: 18px;
+  margin: 0 auto;
+  background: #000;
+  border: 2px solid var(--gold2);
+  padding: 2px;
+}
+#loading-fill { height: 100%; width: 0%; background: linear-gradient(90deg, var(--gold2), var(--gold)); transition: width 0.15s; }
+#loading-label { margin-top: 8px; font-size: 8px; color: var(--dim); }
+
+.arcade-btn {
+  margin-top: 22px;
+  font-family: inherit;
+  font-size: 13px;
+  color: var(--ink);
+  background: linear-gradient(180deg, var(--gold), var(--gold2));
+  border: 3px solid #000;
+  padding: 14px 20px;
+  cursor: pointer;
+  box-shadow: 0 4px 0 #000;
+  animation: blink 1s step-start infinite;
+}
+.arcade-btn:hover { filter: brightness(1.1); }
+.arcade-btn:active { transform: translateY(3px); box-shadow: 0 1px 0 #000; }
+@keyframes blink { 50% { filter: brightness(1.25); } }
+
+/* ---------------- Risultati ---------------- */
+.results-inner {
+  width: 100%;
+  max-width: 460px;
+  max-height: 100%;
+  overflow-y: auto;
+  padding: 10px;
+}
+#winner-title {
+  font-size: 34px;
+  color: var(--gold);
+  text-shadow: 3px 3px 0 var(--red), 0 0 18px #ffd23f88;
+  animation: vspulse 0.8s infinite alternate;
+}
+#winner-canvas {
+  image-rendering: pixelated;
+  margin: 14px auto 6px;
+  display: block;
+  border: 3px solid var(--gold);
+  background: #0a0713;
+}
+#winner-name { font-size: 16px; color: #fff; }
+#winner-role { font-size: 8px; color: var(--dim); margin-top: 6px; }
+.results-h2 { font-size: 12px; color: var(--gold2); margin: 18px 0 10px; }
+
+#final-ranking { list-style: none; text-align: left; }
+#final-ranking li {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 9px; padding: 4px 6px; border-bottom: 1px solid #ffffff14;
+}
+#final-ranking li .rk { color: var(--gold); width: 30px; }
+#final-ranking li img { width: 20px; height: 20px; image-rendering: pixelated; border: 1px solid #000; }
+#final-ranking li.top1 { color: var(--gold); font-size: 11px; }
+
+/* ---------------- Footer ---------------- */
+#footer {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  font-size: 7px;
+  color: var(--dim);
+}
+.footer-note { flex: 1 1 auto; text-align: center; }
+.mini-btn {
+  font-family: inherit;
+  font-size: 8px;
+  color: var(--text);
+  background: var(--panel);
+  border: 2px solid #4b356f;
+  padding: 6px 8px;
+  cursor: pointer;
+  text-decoration: none;
+}
+.mini-btn:hover { border-color: var(--gold); color: var(--gold); }
+
+/* ---------------- Ranking panel ---------------- */
+#ranking-panel {
+  flex: 0 0 300px;
+  width: 300px;
+  background: var(--panel);
+  border: 3px solid #4b356f;
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: inset 0 0 0 2px #ffffff10;
+}
+.ranking-header {
+  font-size: 14px;
+  color: var(--ink);
+  background: linear-gradient(180deg, var(--gold), var(--gold2));
+  padding: 12px;
+  text-align: center;
+  letter-spacing: 1px;
+}
+.ranking-sub { font-size: 7px; color: var(--dim); text-align: center; padding: 6px; border-bottom: 2px solid #4b356f; }
+#ranking-list { list-style: none; overflow-y: auto; flex: 1 1 auto; padding: 6px; }
+
+#ranking-list li {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 9px; line-height: 1.3;
+  padding: 5px 6px; margin-bottom: 3px;
+  border: 1px solid #2c1f45;
+  border-radius: 3px;
+  background: #0f0a1c;
+  min-height: 30px;
+}
+#ranking-list li .rk { color: var(--gold2); width: 26px; flex: 0 0 26px; text-align: right; }
+#ranking-list li img { width: 22px; height: 22px; image-rendering: pixelated; border: 1px solid #000; background: #000; flex: 0 0 22px; }
+#ranking-list li .nm { flex: 1 1 auto; overflow: hidden; text-overflow: ellipsis; }
+#ranking-list li.empty { color: #4a3a68; }
+#ranking-list li.empty .rk { color: #4a3a68; }
+#ranking-list li.champion { border-color: var(--gold); background: #2a2140; color: var(--gold); }
+#ranking-list li.flash { animation: rowflash 0.7s ease-out; }
+@keyframes rowflash {
+  0% { background: var(--red); color: #fff; transform: translateX(-6px); }
+  100% { background: #0f0a1c; }
+}
+
+/* schermi stretti: comprimi la classifica */
+@media (max-width: 900px) {
+  #ranking-panel { flex-basis: 210px; width: 210px; }
+  #ranking-list li { font-size: 8px; }
+}

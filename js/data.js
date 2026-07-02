@@ -1,0 +1,1631 @@
+// GENERATO da tools/fetch_faces.mjs — non modificare a mano.
+window.CHARACTERS = [
+  {
+    "id": "michela-murgia",
+    "name": "Michela Murgia",
+    "years": "1972–2023",
+    "role": "Scrittrice e attivista",
+    "faceImage": "assets/faces/michela-murgia.png",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Michela_Murgia.png",
+    "license": "CC BY 2.5 it",
+    "author": "Radio Radicale",
+    "category": "cultura",
+    "fixed": true,
+    "gender": "f",
+    "outfit": {
+      "t": "dress",
+      "c": "#4a2b52",
+      "a": "#c0293f"
+    },
+    "fallQuote": "Chiamate l'accabadora!",
+    "faceRect": null
+  },
+  {
+    "id": "benito-mussolini",
+    "name": "Benito Mussolini",
+    "years": "1883–1945",
+    "role": "Capo del fascismo",
+    "faceImage": "assets/faces/benito-mussolini.jpg",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Mussolini_mezzobusto.jpg",
+    "license": "Public domain",
+    "author": "Sconosciuto",
+    "category": "politica",
+    "fixed": false,
+    "gender": "m",
+    "outfit": {
+      "t": "blackshirt",
+      "c": "#1a171e",
+      "a": "#3a3632"
+    },
+    "fallQuote": "Me ne fregoooo!",
+    "faceRect": null
+  },
+  {
+    "id": "giacomo-matteotti",
+    "name": "Giacomo Matteotti",
+    "years": "1885–1924",
+    "role": "Deputato socialista",
+    "faceImage": "assets/faces/giacomo-matteotti.jpg",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Giacomo_Matteotti_2.jpg",
+    "license": "Public domain",
+    "author": "Unknown authorUnknown author",
+    "category": "politica",
+    "fixed": false,
+    "gender": "m",
+    "outfit": {
+      "t": "suit",
+      "c": "#3a3f52",
+      "a": "#c0293f"
+    },
+    "fallQuote": "Il mio discorso resta!",
+    "faceRect": null
+  },
+  {
+    "id": "antonio-gramsci",
+    "name": "Antonio Gramsci",
+    "years": "1891–1937",
+    "role": "Fondatore del PCI",
+    "faceImage": "assets/faces/antonio-gramsci.png",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Gramsci_(9_%C3%97_11).png",
+    "license": "Public domain",
+    "author": "Source",
+    "category": "politica",
+    "fixed": false,
+    "gender": "m",
+    "outfit": {
+      "t": "suit",
+      "c": "#37312a",
+      "a": "#c0293f"
+    },
+    "fallQuote": "Odio gli indifferenti!",
+    "faceRect": null
+  },
+  {
+    "id": "alcide-de-gasperi",
+    "name": "Alcide De Gasperi",
+    "years": "1881–1954",
+    "role": "Padre della Repubblica",
+    "faceImage": "assets/faces/alcide-de-gasperi.jpg",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Alcide_De_Gasperi_2.jpg",
+    "license": "Public domain",
+    "author": "Presidenza Del Consiglio Dei Ministri",
+    "category": "politica",
+    "fixed": false,
+    "gender": "m",
+    "outfit": {
+      "t": "suit",
+      "c": "#2c3145",
+      "a": "#6b7f9e"
+    },
+    "fallQuote": "L'Europa si fa così?!",
+    "faceRect": null
+  },
+  {
+    "id": "sandro-pertini",
+    "name": "Sandro Pertini",
+    "years": "1896–1990",
+    "role": "Presidente partigiano",
+    "faceImage": "assets/faces/sandro-pertini.jpg",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Sandro_Pertini_Official.jpg",
+    "license": "Attribution",
+    "author": "Unknown authorUnknown author",
+    "category": "politica",
+    "fixed": false,
+    "gender": "m",
+    "outfit": {
+      "t": "suit",
+      "c": "#3d3a45",
+      "a": "#d8b02a"
+    },
+    "fallQuote": "La pipa! Ho perso la pipa!",
+    "faceRect": null
+  },
+  {
+    "id": "aldo-moro",
+    "name": "Aldo Moro",
+    "years": "1916–1978",
+    "role": "Statista DC",
+    "faceImage": "assets/faces/aldo-moro.jpg",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Aldo_Moro_1968.jpg",
+    "license": "CC BY-SA 4.0",
+    "author": "Unknown authorUnknown author",
+    "category": "politica",
+    "fixed": false,
+    "gender": "m",
+    "outfit": {
+      "t": "suit",
+      "c": "#2f2f38",
+      "a": "#6b7f9e"
+    },
+    "fallQuote": "Convergenze... verticali!",
+    "faceRect": null
+  },
+  {
+    "id": "giulio-andreotti",
+    "name": "Giulio Andreotti",
+    "years": "1919–2013",
+    "role": "Sette volte premier",
+    "faceImage": "assets/faces/giulio-andreotti.jpg",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Giulio_Andreotti.jpg",
+    "license": "Public domain",
+    "author": "Senato della Repubblica",
+    "category": "politica",
+    "fixed": false,
+    "gender": "m",
+    "outfit": {
+      "t": "suit",
+      "c": "#23283a",
+      "a": "#43507a"
+    },
+    "fallQuote": "Il potere logora chi vola!",
+    "faceRect": null
+  },
+  {
+    "id": "enrico-berlinguer",
+    "name": "Enrico Berlinguer",
+    "years": "1922–1984",
+    "role": "Segretario del PCI",
+    "faceImage": "assets/faces/enrico-berlinguer.jpg",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Enrico_Berlinguer.jpg",
+    "license": "Public domain",
+    "author": "Unknown authorUnknown author",
+    "category": "politica",
+    "fixed": false,
+    "gender": "m",
+    "outfit": {
+      "t": "suit",
+      "c": "#33384a",
+      "a": "#c0293f"
+    },
+    "fallQuote": "Austerità pure in volo!",
+    "faceRect": null
+  },
+  {
+    "id": "giorgio-almirante",
+    "name": "Giorgio Almirante",
+    "years": "1914–1988",
+    "role": "Fondatore del MSI",
+    "faceImage": "assets/faces/giorgio-almirante.jpg",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Giorgio_Almirante_MEP_(1)_(cropped).jpg",
+    "license": "Attribution",
+    "author": "European Union",
+    "category": "politica",
+    "fixed": false,
+    "gender": "m",
+    "outfit": {
+      "t": "suit",
+      "c": "#262233",
+      "a": "#3a5a8c"
+    },
+    "fallQuote": "A destra! Tutto a destra!",
+    "faceRect": null
+  },
+  {
+    "id": "nilde-iotti",
+    "name": "Nilde Iotti",
+    "years": "1920–1999",
+    "role": "Presidente della Camera",
+    "faceImage": "assets/faces/nilde-iotti.png",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Nilde_Iotti.png",
+    "license": "Public domain",
+    "author": "Camera dei Deputati",
+    "category": "politica",
+    "fixed": false,
+    "gender": "f",
+    "outfit": {
+      "t": "skirtsuit",
+      "c": "#7a2438",
+      "a": "#d8b02a"
+    },
+    "fallQuote": "La seduta è tolta!",
+    "faceRect": null
+  },
+  {
+    "id": "marco-pannella",
+    "name": "Marco Pannella",
+    "years": "1930–2016",
+    "role": "Leader radicale",
+    "faceImage": "assets/faces/marco-pannella.jpg",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Marco_Pannella_MEP,_1994_(02)_(cropped).jpg",
+    "license": "Attribution",
+    "author": "European Union",
+    "category": "politica",
+    "fixed": false,
+    "gender": "m",
+    "outfit": {
+      "t": "suit",
+      "c": "#4a4438",
+      "a": "#e0e4ee",
+      "tie": false
+    },
+    "fallQuote": "Sciopero della gravità!",
+    "faceRect": null
+  },
+  {
+    "id": "emma-bonino",
+    "name": "Emma Bonino",
+    "years": "1948–",
+    "role": "Radicale, ministra",
+    "faceImage": "assets/faces/emma-bonino.jpg",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Bonino_Nencini_De_Petris_Grasso_(cropped).jpg",
+    "license": "Attribution",
+    "author": "Presidenza della Repubblica",
+    "category": "politica",
+    "fixed": false,
+    "gender": "f",
+    "outfit": {
+      "t": "skirtsuit",
+      "c": "#b3243b",
+      "a": "#f4e04d"
+    },
+    "fallQuote": "Un referendum sulla torre!",
+    "faceRect": null
+  },
+  {
+    "id": "bettino-craxi",
+    "name": "Bettino Craxi",
+    "years": "1934–2000",
+    "role": "Segretario del PSI",
+    "faceImage": "assets/faces/bettino-craxi.jpg",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Bettino_Craxi_MEP_Portrait.jpg",
+    "license": "Attribution",
+    "author": "European Union",
+    "category": "politica",
+    "fixed": false,
+    "gender": "m",
+    "outfit": {
+      "t": "suit",
+      "c": "#3a3040",
+      "a": "#c0293f"
+    },
+    "fallQuote": "Ad Hammamet si stava meglio!",
+    "faceRect": null
+  },
+  {
+    "id": "silvio-berlusconi",
+    "name": "Silvio Berlusconi",
+    "years": "1936–2023",
+    "role": "Imprenditore e premier",
+    "faceImage": "assets/faces/silvio-berlusconi.jpg",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Silvio_Berlusconi_(2010)_cropped.jpg",
+    "license": "Public domain",
+    "author": "Silvio_Berlusconi_(2010).jpg: www.la-moncloa.es derivative work: Off2riorob (talk)",
+    "category": "politica",
+    "fixed": false,
+    "gender": "m",
+    "outfit": {
+      "t": "suit",
+      "c": "#1e2436",
+      "a": "#43507a"
+    },
+    "fallQuote": "Mi consenta di volare!",
+    "faceRect": null
+  },
+  {
+    "id": "umberto-bossi",
+    "name": "Umberto Bossi",
+    "years": "1941–",
+    "role": "Fondatore Lega Nord",
+    "faceImage": "assets/faces/umberto-bossi.jpg",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Bossi_daticamera_2022.jpg",
+    "license": "CC BY 4.0",
+    "author": "Camera dei deputati",
+    "category": "politica",
+    "fixed": false,
+    "gender": "m",
+    "outfit": {
+      "t": "suit",
+      "c": "#2f4030",
+      "a": "#159a4a"
+    },
+    "fallQuote": "La Padania è laggiù!",
+    "faceRect": null
+  },
+  {
+    "id": "romano-prodi",
+    "name": "Romano Prodi",
+    "years": "1939–",
+    "role": "Premier, presidente CE",
+    "faceImage": "assets/faces/romano-prodi.jpg",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Romano_Prodi_2024_(cropped).jpg",
+    "license": "Public domain",
+    "author": "Vlada Republike Slovenije from Ljubljana, Slovenia",
+    "category": "politica",
+    "fixed": false,
+    "gender": "m",
+    "outfit": {
+      "t": "suit",
+      "c": "#38404a",
+      "a": "#7a9e6b"
+    },
+    "fallQuote": "La mucca era in corridoio!",
+    "faceRect": null
+  },
+  {
+    "id": "matteo-renzi",
+    "name": "Matteo Renzi",
+    "years": "1975–",
+    "role": "Premier",
+    "faceImage": "assets/faces/matteo-renzi.jpg",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Matteo_Renzi_2.jpg",
+    "license": "CC BY 2.0",
+    "author": "PSD Romania",
+    "category": "politica",
+    "fixed": false,
+    "gender": "m",
+    "outfit": {
+      "t": "suit",
+      "c": "#2b3a55",
+      "a": "#eef0f6",
+      "tie": false
+    },
+    "fallQuote": "Stai serenooooo!",
+    "faceRect": null
+  },
+  {
+    "id": "giuseppe-conte",
+    "name": "Giuseppe Conte",
+    "years": "1964–",
+    "role": "Premier",
+    "faceImage": "assets/faces/giuseppe-conte.jpg",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Giuseppe_Conte_-_Quirinale_2022_(cropped2).jpg",
+    "license": "Attribution",
+    "author": "Quirinale",
+    "category": "politica",
+    "fixed": false,
+    "gender": "m",
+    "outfit": {
+      "t": "suit",
+      "c": "#2c3350",
+      "a": "#6b7f9e"
+    },
+    "fallQuote": "Lo dico col cuore: aiuto!",
+    "faceRect": null
+  },
+  {
+    "id": "matteo-salvini",
+    "name": "Matteo Salvini",
+    "years": "1973–",
+    "role": "Leader della Lega",
+    "faceImage": "assets/faces/matteo-salvini.jpg",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Matteo_Salvini,_2025.12.04_(cropped).jpg",
+    "license": "Attribution",
+    "author": "European Union",
+    "category": "politica",
+    "fixed": false,
+    "gender": "m",
+    "outfit": {
+      "t": "sweater",
+      "c": "#2b6f4a",
+      "a": "#eef0f6"
+    },
+    "fallQuote": "Il ponte! Datemi il ponte!",
+    "faceRect": null
+  },
+  {
+    "id": "giorgia-meloni",
+    "name": "Giorgia Meloni",
+    "years": "1977–",
+    "role": "Premier",
+    "faceImage": "assets/faces/giorgia-meloni.jpg",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Giorgia_Meloni_Official_2024_(cropped).jpg",
+    "license": "CC BY 3.0 it",
+    "author": "Governo Italiano",
+    "category": "politica",
+    "fixed": false,
+    "gender": "f",
+    "outfit": {
+      "t": "skirtsuit",
+      "c": "#ececf2",
+      "a": "#1e2436"
+    },
+    "fallQuote": "Sono Giorgia, precipito!",
+    "faceRect": null
+  },
+  {
+    "id": "giovanni-falcone",
+    "name": "Giovanni Falcone",
+    "years": "1939–1992",
+    "role": "Magistrato antimafia",
+    "faceImage": "assets/faces/giovanni-falcone.jpg",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Giovanni_Falcone_2.jpg",
+    "license": "Public domain",
+    "author": "Template:Jaydie Putterman",
+    "category": "politica",
+    "fixed": false,
+    "gender": "m",
+    "outfit": {
+      "t": "suit",
+      "c": "#3a4152",
+      "a": "#7a4b2a"
+    },
+    "fallQuote": "Seguite i soldi, non me!",
+    "faceRect": null
+  },
+  {
+    "id": "paolo-borsellino",
+    "name": "Paolo Borsellino",
+    "years": "1940–1992",
+    "role": "Magistrato antimafia",
+    "faceImage": "assets/faces/paolo-borsellino.jpg",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Paolo_Borsellino.jpg",
+    "license": "CC BY-SA 3.0",
+    "author": "Luigi Oldani",
+    "category": "politica",
+    "fixed": false,
+    "gender": "m",
+    "outfit": {
+      "t": "suit",
+      "c": "#4a4452",
+      "a": "#3a5a8c"
+    },
+    "fallQuote": "Senza paura, anche ora!",
+    "faceRect": null
+  },
+  {
+    "id": "pier-paolo-pasolini",
+    "name": "Pier Paolo Pasolini",
+    "years": "1922–1975",
+    "role": "Poeta e regista",
+    "faceImage": "assets/faces/pier-paolo-pasolini.jpg",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:PierPaoloPasolini.jpg",
+    "license": "Public domain",
+    "author": "Unknown authorUnknown author",
+    "category": "cultura",
+    "fixed": false,
+    "gender": "m",
+    "outfit": {
+      "t": "suit",
+      "c": "#2a2d3a",
+      "a": "#eef0f6",
+      "tie": false
+    },
+    "fallQuote": "Io so chi mi ha spinto!",
+    "faceRect": null
+  },
+  {
+    "id": "italo-calvino",
+    "name": "Italo Calvino",
+    "years": "1923–1985",
+    "role": "Scrittore",
+    "faceImage": "assets/faces/italo-calvino.jpg",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Italo-Calvino-i-Oslo_07-04-1961_Fotograf-Johan-Brun.jpg",
+    "license": "CC BY-SA 4.0",
+    "author": "Johan Brun",
+    "category": "cultura",
+    "fixed": false,
+    "gender": "m",
+    "outfit": {
+      "t": "suit",
+      "c": "#4a4a55",
+      "a": "#8a6f3a"
+    },
+    "fallQuote": "Il barone si arrampicava!",
+    "faceRect": null
+  },
+  {
+    "id": "umberto-eco",
+    "name": "Umberto Eco",
+    "years": "1932–2016",
+    "role": "Scrittore e semiologo",
+    "faceImage": "assets/faces/umberto-eco.jpg",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Umberto_Eco_04.jpg",
+    "license": "CC BY-SA 3.0",
+    "author": "Università Reggio Calabria",
+    "category": "cultura",
+    "fixed": false,
+    "gender": "m",
+    "outfit": {
+      "t": "suit",
+      "c": "#4a3a2a",
+      "a": "#c8871f"
+    },
+    "fallQuote": "Il nome della rooosa!",
+    "faceRect": null
+  },
+  {
+    "id": "primo-levi",
+    "name": "Primo Levi",
+    "years": "1919–1987",
+    "role": "Scrittore",
+    "faceImage": "assets/faces/primo-levi.jpg",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Primo_Levi.jpg",
+    "license": "Public domain",
+    "author": "Unknown (Mondadori Publishers)",
+    "category": "cultura",
+    "fixed": false,
+    "gender": "m",
+    "outfit": {
+      "t": "suit",
+      "c": "#45505a",
+      "a": "#8a9aaa"
+    },
+    "fallQuote": "La tregua è finita!",
+    "faceRect": null
+  },
+  {
+    "id": "elsa-morante",
+    "name": "Elsa Morante",
+    "years": "1912–1985",
+    "role": "Scrittrice",
+    "faceImage": "assets/faces/elsa-morante.jpg",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Elsa_morante_gatti.jpg",
+    "license": "Public domain",
+    "author": "Unknown photographer",
+    "category": "cultura",
+    "fixed": false,
+    "gender": "f",
+    "outfit": {
+      "t": "dress",
+      "c": "#5a2a3a",
+      "a": "#d8b02a"
+    },
+    "fallQuote": "La Storia finisce così!",
+    "faceRect": null
+  },
+  {
+    "id": "oriana-fallaci",
+    "name": "Oriana Fallaci",
+    "years": "1929–2006",
+    "role": "Giornalista",
+    "faceImage": "assets/faces/oriana-fallaci.jpg",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Oriana_Fallaci_self_portrait_Rolleiflex.jpg",
+    "license": "Public domain",
+    "author": "Oriana Fallaci",
+    "category": "cultura",
+    "fixed": false,
+    "gender": "f",
+    "outfit": {
+      "t": "dress",
+      "c": "#23202b",
+      "a": "#6b7f9e"
+    },
+    "fallQuote": "La rabbia e l'orgoglio!",
+    "faceRect": null
+  },
+  {
+    "id": "indro-montanelli",
+    "name": "Indro Montanelli",
+    "years": "1909–2001",
+    "role": "Giornalista",
+    "faceImage": "assets/faces/indro-montanelli.jpg",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Indro_Montanelli_2.jpg",
+    "license": "Public domain",
+    "author": "Unknown authorUnknown author",
+    "category": "cultura",
+    "fixed": false,
+    "gender": "m",
+    "outfit": {
+      "t": "coat",
+      "c": "#b9a074",
+      "a": "#4a3a2a"
+    },
+    "fallQuote": "Controcorrente anche ora!",
+    "faceRect": null
+  },
+  {
+    "id": "dario-fo",
+    "name": "Dario Fo",
+    "years": "1926–2016",
+    "role": "Drammaturgo, Nobel",
+    "faceImage": "assets/faces/dario-fo.jpg",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Dario_Fo,_Italian_playwright.jpg",
+    "license": "Public domain",
+    "author": "Gotfryd, Bernard, photographer",
+    "category": "cultura",
+    "fixed": false,
+    "gender": "m",
+    "outfit": {
+      "t": "suit",
+      "c": "#6b4fb3",
+      "a": "#ffd23f",
+      "tie": false
+    },
+    "fallQuote": "Che mistero buffo!",
+    "faceRect": null
+  },
+  {
+    "id": "alda-merini",
+    "name": "Alda Merini",
+    "years": "1931–2009",
+    "role": "Poetessa",
+    "faceImage": "assets/faces/alda-merini.jpg",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Alda_Merini.jpg",
+    "license": "CC BY-SA 3.0",
+    "author": "Giuliano Grittini. Original uploader was Margherita at it.wikipedia",
+    "category": "cultura",
+    "fixed": false,
+    "gender": "f",
+    "outfit": {
+      "t": "dress",
+      "c": "#8a5a9e",
+      "a": "#d8b02a"
+    },
+    "fallQuote": "Anche i poeti cadono!",
+    "faceRect": null
+  },
+  {
+    "id": "andrea-camilleri",
+    "name": "Andrea Camilleri",
+    "years": "1925–2019",
+    "role": "Scrittore",
+    "faceImage": "assets/faces/andrea-camilleri.jpg",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Andrea_Camilleri,_portrait,_Premio_Chiara_2010.jpg",
+    "license": "CC BY 2.0",
+    "author": "TeatroGe, derivate from a work by Associazione Amici di Piero Chiara",
+    "category": "cultura",
+    "fixed": false,
+    "gender": "m",
+    "outfit": {
+      "t": "blackshirt",
+      "c": "#3a3632",
+      "a": "#5a5652"
+    },
+    "fallQuote": "Montalbano sono... in volo!",
+    "faceRect": null
+  },
+  {
+    "id": "gianni-rodari",
+    "name": "Gianni Rodari",
+    "years": "1920–1980",
+    "role": "Scrittore per ragazzi",
+    "faceImage": "assets/faces/gianni-rodari.jpg",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Gianni_Rodari_anni_cinquanta.jpg",
+    "license": "Public domain",
+    "author": "famiglia Rodari",
+    "category": "cultura",
+    "fixed": false,
+    "gender": "m",
+    "outfit": {
+      "t": "sweater",
+      "c": "#3f6f5a",
+      "a": "#ffd23f"
+    },
+    "fallQuote": "Favola al precipizio!",
+    "faceRect": null
+  },
+  {
+    "id": "rita-levi-montalcini",
+    "name": "Rita Levi-Montalcini",
+    "years": "1909–2012",
+    "role": "Nobel per la medicina",
+    "faceImage": "assets/faces/rita-levi-montalcini.png",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Rita_Levi-Montalcini_(1986).png",
+    "license": "Public domain",
+    "author": "Kurt Hagblom, Firma Hagblom-Foto, restored by Adam Cuerden",
+    "category": "cultura",
+    "fixed": false,
+    "gender": "f",
+    "outfit": {
+      "t": "gown",
+      "c": "#2b3050",
+      "a": "#d8d2e0"
+    },
+    "fallQuote": "Il Nobel resta lassù!",
+    "faceRect": null
+  },
+  {
+    "id": "margherita-hack",
+    "name": "Margherita Hack",
+    "years": "1922–2013",
+    "role": "Astrofisica",
+    "faceImage": "assets/faces/margherita-hack.jpg",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Margherita_Hack_in_Genoa.jpg",
+    "license": "CC BY-SA 2.0",
+    "author": "Cirone-Musi, Festival della Scienza",
+    "category": "cultura",
+    "fixed": false,
+    "gender": "f",
+    "outfit": {
+      "t": "sweater",
+      "c": "#556b7a",
+      "a": "#d0d8e0"
+    },
+    "fallQuote": "Vengo giù come un meteorite!",
+    "faceRect": null
+  },
+  {
+    "id": "piero-angela",
+    "name": "Piero Angela",
+    "years": "1928–2022",
+    "role": "Divulgatore",
+    "faceImage": "assets/faces/piero-angela.jpg",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Piero_Angela2.jpg",
+    "license": "Public domain",
+    "author": "Filippo Caranti aka Terrasque",
+    "category": "cultura",
+    "fixed": false,
+    "gender": "m",
+    "outfit": {
+      "t": "suit",
+      "c": "#2c3a55",
+      "a": "#8a9aaa"
+    },
+    "fallQuote": "La gravità funziona! Quark!",
+    "faceRect": null
+  },
+  {
+    "id": "samantha-cristoforetti",
+    "name": "Samantha Cristoforetti",
+    "years": "1977–",
+    "role": "Astronauta",
+    "faceImage": "assets/faces/samantha-cristoforetti.jpg",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Samantha_Cristoforetti_portrait.jpg",
+    "license": "Public domain",
+    "author": "Robert Markowitz",
+    "category": "cultura",
+    "fixed": false,
+    "gender": "f",
+    "outfit": {
+      "t": "astronaut",
+      "c": "#f4f4f8",
+      "a": "#e8863a"
+    },
+    "fallQuote": "Rientro non programmato!",
+    "faceRect": null
+  },
+  {
+    "id": "toto",
+    "name": "Totò",
+    "years": "1898–1967",
+    "role": "Attore comico",
+    "faceImage": "assets/faces/toto.png",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:AntonioDeCurtisFoto.png",
+    "license": "Public domain",
+    "author": "Unknown authorUnknown author",
+    "category": "spettacolo",
+    "fixed": false,
+    "gender": "m",
+    "outfit": {
+      "t": "tux",
+      "c": "#16141c",
+      "a": "#eef0f6"
+    },
+    "fallQuote": "Signori si nasce, si cade!",
+    "faceRect": null
+  },
+  {
+    "id": "anna-magnani",
+    "name": "Anna Magnani",
+    "years": "1908–1973",
+    "role": "Attrice",
+    "faceImage": "assets/faces/anna-magnani.jpg",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Anna_Magnani_-_portrait.tif",
+    "license": "CC BY-SA 4.0",
+    "author": "Hans Krebs",
+    "category": "spettacolo",
+    "fixed": false,
+    "gender": "f",
+    "outfit": {
+      "t": "dress",
+      "c": "#201c26",
+      "a": "#6a6474"
+    },
+    "fallQuote": "Aò, nun me spingeee!",
+    "faceRect": null
+  },
+  {
+    "id": "alberto-sordi",
+    "name": "Alberto Sordi",
+    "years": "1920–2003",
+    "role": "Attore",
+    "faceImage": "assets/faces/alberto-sordi.jpg",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Alberto_Sordi_(1962).jpg",
+    "license": "Public domain",
+    "author": "UnknownUnknown",
+    "category": "spettacolo",
+    "fixed": false,
+    "gender": "m",
+    "outfit": {
+      "t": "suit",
+      "c": "#3a3345",
+      "a": "#c0293f"
+    },
+    "fallQuote": "Maccarone, m'hai spinto!",
+    "faceRect": null
+  },
+  {
+    "id": "sophia-loren",
+    "name": "Sophia Loren",
+    "years": "1934–",
+    "role": "Attrice",
+    "faceImage": "assets/faces/sophia-loren.jpg",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Sophia_Loren_-_1959.jpg",
+    "license": "Public domain",
+    "author": "Paul A. Hesse Studios",
+    "category": "spettacolo",
+    "fixed": false,
+    "gender": "f",
+    "outfit": {
+      "t": "dress",
+      "c": "#c0293f",
+      "a": "#ffd23f"
+    },
+    "fallQuote": "Ieri, oggi... e giù!",
+    "faceRect": null
+  },
+  {
+    "id": "marcello-mastroianni",
+    "name": "Marcello Mastroianni",
+    "years": "1924–1996",
+    "role": "Attore",
+    "faceImage": "assets/faces/marcello-mastroianni.jpg",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Marcello_Mastroianni_02.jpg",
+    "license": "CC BY-SA 3.0",
+    "author": "Gorup de Besanez",
+    "category": "spettacolo",
+    "fixed": false,
+    "gender": "m",
+    "outfit": {
+      "t": "tux",
+      "c": "#1c1f2a",
+      "a": "#eef0f6"
+    },
+    "fallQuote": "La dolce caduta!",
+    "faceRect": null
+  },
+  {
+    "id": "federico-fellini",
+    "name": "Federico Fellini",
+    "years": "1920–1993",
+    "role": "Regista",
+    "faceImage": "assets/faces/federico-fellini.jpg",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Federico_Fellini_010.jpg",
+    "license": "Public domain",
+    "author": "Italiamia",
+    "category": "spettacolo",
+    "fixed": false,
+    "gender": "m",
+    "outfit": {
+      "t": "coat",
+      "c": "#23202b",
+      "a": "#c0293f"
+    },
+    "fallQuote": "Amarcord il terreno!",
+    "faceRect": null
+  },
+  {
+    "id": "monica-vitti",
+    "name": "Monica Vitti",
+    "years": "1931–2022",
+    "role": "Attrice",
+    "faceImage": "assets/faces/monica-vitti.jpg",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Monica_Vitti.jpg",
+    "license": "CC BY-SA 2.0",
+    "author": "Elena Torre from Viareggio",
+    "category": "spettacolo",
+    "fixed": false,
+    "gender": "f",
+    "outfit": {
+      "t": "dress",
+      "c": "#d8cfc0",
+      "a": "#6a6474"
+    },
+    "fallQuote": "L'avventura finisce qui!",
+    "faceRect": null
+  },
+  {
+    "id": "massimo-troisi",
+    "name": "Massimo Troisi",
+    "years": "1953–1994",
+    "role": "Attore e regista",
+    "faceImage": "assets/faces/massimo-troisi.jpg",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Massimo_Troisi_alla_Mostra_del_Cinema_di_Venezia,_1989.jpg",
+    "license": "CC BY-SA 4.0",
+    "author": "Gorup de Besanez",
+    "category": "spettacolo",
+    "fixed": false,
+    "gender": "m",
+    "outfit": {
+      "t": "suit",
+      "c": "#4a3a2f",
+      "a": "#d8cfc0",
+      "tie": false
+    },
+    "fallQuote": "Ricomincio da zero metri!",
+    "faceRect": null
+  },
+  {
+    "id": "roberto-benigni",
+    "name": "Roberto Benigni",
+    "years": "1952–",
+    "role": "Attore e regista",
+    "faceImage": "assets/faces/roberto-benigni.jpg",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Roberto_Benigni-5274.jpg",
+    "license": "CC BY-SA 3.0",
+    "author": "Harald Krichel",
+    "category": "spettacolo",
+    "fixed": false,
+    "gender": "m",
+    "outfit": {
+      "t": "suit",
+      "c": "#45505a",
+      "a": "#c0293f"
+    },
+    "fallQuote": "La vita è bella lo stesso!",
+    "faceRect": null
+  },
+  {
+    "id": "raffaella-carra",
+    "name": "Raffaella Carrà",
+    "years": "1943–2021",
+    "role": "Showgirl",
+    "faceImage": "assets/faces/raffaella-carra.jpg",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Raffaella_Carr%C3%A0_Grand_H%C3%B4tel_1971.jpg",
+    "license": "Public domain",
+    "author": "Grand Hôtel",
+    "category": "spettacolo",
+    "fixed": false,
+    "gender": "f",
+    "outfit": {
+      "t": "pantsuit",
+      "c": "#f2ecf4",
+      "a": "#ffd23f"
+    },
+    "fallQuote": "Tuca tuca col terreno!",
+    "faceRect": null
+  },
+  {
+    "id": "mina",
+    "name": "Mina",
+    "years": "1940–",
+    "role": "Cantante",
+    "faceImage": "assets/faces/mina.jpg",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Anna_Maria_Mazzini_(1972).jpg",
+    "license": "Public domain",
+    "author": "Radiotelevisione Italiana",
+    "category": "spettacolo",
+    "fixed": false,
+    "gender": "f",
+    "outfit": {
+      "t": "gown",
+      "c": "#d8b02a",
+      "a": "#201c26"
+    },
+    "fallQuote": "Ancora, ancora, ancora!",
+    "faceRect": null
+  },
+  {
+    "id": "adriano-celentano",
+    "name": "Adriano Celentano",
+    "years": "1938–",
+    "role": "Cantante",
+    "faceImage": "assets/faces/adriano-celentano.jpg",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Celentano_1961_Salsomaggiore_Terme.jpg",
+    "license": "Public domain",
+    "author": "Collezione Biblioteca Comunale G.D. Romagnosi, Salsomaggiore Terme",
+    "category": "spettacolo",
+    "fixed": false,
+    "gender": "m",
+    "outfit": {
+      "t": "suit",
+      "c": "#23283a",
+      "a": "#eef0f6",
+      "tie": false
+    },
+    "fallQuote": "24mila baci al suolo!",
+    "faceRect": null
+  },
+  {
+    "id": "mike-bongiorno",
+    "name": "Mike Bongiorno",
+    "years": "1924–2009",
+    "role": "Presentatore",
+    "faceImage": "assets/faces/mike-bongiorno.jpg",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Mike_Bongiorno_-_Flash.jpg",
+    "license": "Public domain",
+    "author": ". The original uploader was Cotton at Italian Wikipedia.",
+    "category": "spettacolo",
+    "fixed": false,
+    "gender": "m",
+    "outfit": {
+      "t": "suit",
+      "c": "#33384a",
+      "a": "#d8b02a"
+    },
+    "fallQuote": "Allegriaaaa!",
+    "faceRect": null
+  },
+  {
+    "id": "lucio-dalla",
+    "name": "Lucio Dalla",
+    "years": "1943–2012",
+    "role": "Cantautore",
+    "faceImage": "assets/faces/lucio-dalla.jpg",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Lucio_Dalla_1.JPG",
+    "license": "CC BY-SA 3.0",
+    "author": "Lucarelli",
+    "category": "spettacolo",
+    "fixed": false,
+    "gender": "m",
+    "outfit": {
+      "t": "sweater",
+      "c": "#7a3fb3",
+      "a": "#ffd23f"
+    },
+    "fallQuote": "Attenti al suolooo!",
+    "faceRect": null
+  },
+  {
+    "id": "luciano-pavarotti",
+    "name": "Luciano Pavarotti",
+    "years": "1935–2007",
+    "role": "Tenore",
+    "faceImage": "assets/faces/luciano-pavarotti.jpg",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Luciano_Pavarotti_2004.jpg",
+    "license": "CC BY-SA 2.0",
+    "author": "Kingkongphoto & www.celebrity-photos.com from Laurel Maryland, USA",
+    "category": "spettacolo",
+    "fixed": false,
+    "gender": "m",
+    "outfit": {
+      "t": "tux",
+      "c": "#16141c",
+      "a": "#f4f4f8"
+    },
+    "fallQuote": "Vinceròoo... forse no!",
+    "faceRect": null
+  },
+  {
+    "id": "gino-bartali",
+    "name": "Gino Bartali",
+    "years": "1914–2000",
+    "role": "Ciclista",
+    "faceImage": "assets/faces/gino-bartali.jpg",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Gino_Bartali_1945.jpg",
+    "license": "Public domain",
+    "author": "Unknown (Mondadori Publishers)",
+    "category": "sport",
+    "fixed": false,
+    "gender": "m",
+    "outfit": {
+      "t": "cycling",
+      "c": "#6f7a30",
+      "a": "#d8b02a"
+    },
+    "fallQuote": "L'è tutto da rifare!",
+    "faceRect": null
+  },
+  {
+    "id": "fausto-coppi",
+    "name": "Fausto Coppi",
+    "years": "1919–1960",
+    "role": "Ciclista",
+    "faceImage": "assets/faces/fausto-coppi.jpg",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Fausto_Coppi,_Tour_de_France_1952_01_(cropped).jpg",
+    "license": "CC BY-SA 3.0 nl",
+    "author": "J.D. Noske (Anefo)",
+    "category": "sport",
+    "fixed": false,
+    "gender": "m",
+    "outfit": {
+      "t": "cycling",
+      "c": "#9fd6d2",
+      "a": "#eef0f6"
+    },
+    "fallQuote": "Un airone senza ali!",
+    "faceRect": null
+  },
+  {
+    "id": "pietro-mennea",
+    "name": "Pietro Mennea",
+    "years": "1952–2013",
+    "role": "Velocista",
+    "faceImage": "assets/faces/pietro-mennea.jpg",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Pietro_Mennea_1972.jpg",
+    "license": "Public domain",
+    "author": "Sergio Del Grande (Mondadori Publishers)",
+    "category": "sport",
+    "fixed": false,
+    "gender": "m",
+    "outfit": {
+      "t": "running",
+      "c": "#2b6fd6",
+      "a": "#eef0f6"
+    },
+    "fallQuote": "Più veloce del record!",
+    "faceRect": null
+  },
+  {
+    "id": "dino-zoff",
+    "name": "Dino Zoff",
+    "years": "1942–",
+    "role": "Portiere campione del mondo",
+    "faceImage": "assets/faces/dino-zoff.jpg",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Dino_Zoff_-_1972_-_Juventus_FC_(cropped).jpg",
+    "license": "Public domain",
+    "author": "Original: Unknown authorUnknown author / Derivative work: Heiko Gerber",
+    "category": "sport",
+    "fixed": false,
+    "gender": "m",
+    "outfit": {
+      "t": "keeper",
+      "c": "#3a3f45",
+      "a": "#d8b02a"
+    },
+    "fallQuote": "Stavolta non la paro!",
+    "faceRect": null
+  },
+  {
+    "id": "roberto-baggio",
+    "name": "Roberto Baggio",
+    "years": "1967–",
+    "role": "Calciatore",
+    "faceImage": "assets/faces/roberto-baggio.jpg",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Roberto_Baggio_-_Italia_%2790.jpg",
+    "license": "Public domain",
+    "author": "Unknown authorUnknown author",
+    "category": "sport",
+    "fixed": false,
+    "gender": "m",
+    "outfit": {
+      "t": "football",
+      "c": "#2b6fd6",
+      "a": "#eef0f6",
+      "num": "10"
+    },
+    "fallQuote": "Alto! Come a Pasadena!",
+    "faceRect": null
+  },
+  {
+    "id": "valentino-rossi",
+    "name": "Valentino Rossi",
+    "years": "1979–",
+    "role": "Motociclista",
+    "faceImage": "assets/faces/valentino-rossi.jpg",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Valentino_Rossi_2017.jpg",
+    "license": "CC BY-SA 4.0",
+    "author": "RaúlBlancoRueda",
+    "category": "sport",
+    "fixed": false,
+    "gender": "m",
+    "outfit": {
+      "t": "moto",
+      "c": "#ffd23f",
+      "a": "#2b8cff",
+      "num": "46"
+    },
+    "fallQuote": "Questa non la piego!",
+    "faceRect": null
+  },
+  {
+    "id": "federica-pellegrini",
+    "name": "Federica Pellegrini",
+    "years": "1988–",
+    "role": "Nuotatrice",
+    "faceImage": "assets/faces/federica-pellegrini.jpg",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Federica_Pellegrini_e_Luca_Marin_(cropped).jpg",
+    "license": "CC BY 2.0",
+    "author": "Original: br1dotcom from Milan, Italy Derivative work: Bill william compton",
+    "category": "sport",
+    "fixed": false,
+    "gender": "f",
+    "outfit": {
+      "t": "swim",
+      "c": "#1e3a6b",
+      "a": "#eef0f6"
+    },
+    "fallQuote": "Il tuffo c'è, l'acqua no!",
+    "faceRect": null
+  },
+  {
+    "id": "jannik-sinner",
+    "name": "Jannik Sinner",
+    "years": "2001–",
+    "role": "Tennista",
+    "faceImage": "assets/faces/jannik-sinner.jpg",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Jannik_Sinner_US_Open_2025_(cropped).jpg",
+    "license": "Public domain",
+    "author": "The White House derivative work: Kacir",
+    "category": "sport",
+    "fixed": false,
+    "gender": "m",
+    "outfit": {
+      "t": "tennis",
+      "c": "#e8863a",
+      "a": "#eef0f6"
+    },
+    "fallQuote": "Game, set... schianto!",
+    "faceRect": null
+  },
+  {
+    "id": "tina-anselmi",
+    "name": "Tina Anselmi",
+    "years": "1927–2016",
+    "role": "Prima donna ministra",
+    "faceImage": "assets/faces/tina-anselmi.jpg",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Tina_Anselmi_3.jpg",
+    "license": "CC BY-SA 4.0",
+    "author": "Camera dei Deputati",
+    "category": "politica",
+    "fixed": false,
+    "gender": "f",
+    "outfit": {
+      "t": "skirtsuit",
+      "c": "#3f6f5a",
+      "a": "#d8d2e0"
+    },
+    "fallQuote": "Ho fondato il SSN, servirà!",
+    "faceRect": null
+  },
+  {
+    "id": "liliana-segre",
+    "name": "Liliana Segre",
+    "years": "1930–",
+    "role": "Senatrice a vita",
+    "faceImage": "assets/faces/liliana-segre.jpg",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Liliana_Segre_(XVIII_Legislatura_Senato).jpg",
+    "license": "CC BY 1.0",
+    "author": "Carmine Flamminio / Senato della Repubblica",
+    "category": "politica",
+    "fixed": false,
+    "gender": "f",
+    "outfit": {
+      "t": "coat",
+      "c": "#2b3050",
+      "a": "#d8d2e0"
+    },
+    "fallQuote": "Mai indifferenti!",
+    "faceRect": null
+  },
+  {
+    "id": "laura-boldrini",
+    "name": "Laura Boldrini",
+    "years": "1961–",
+    "role": "Presidente della Camera",
+    "faceImage": "assets/faces/laura-boldrini.jpg",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Laura_Boldrini_2016.jpg",
+    "license": "CC0",
+    "author": "EU2016 SK",
+    "category": "politica",
+    "fixed": false,
+    "gender": "f",
+    "outfit": {
+      "t": "skirtsuit",
+      "c": "#b3243b",
+      "a": "#ececf2"
+    },
+    "fallQuote": "Si dice presidentA!",
+    "faceRect": null
+  },
+  {
+    "id": "elly-schlein",
+    "name": "Elly Schlein",
+    "years": "1985–",
+    "role": "Segretaria del PD",
+    "faceImage": "assets/faces/elly-schlein.jpg",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Elly_Schlein_in_2023_(cropped).jpg",
+    "license": "CC BY 4.0",
+    "author": "European Commission (Jennifer Jacquemart)",
+    "category": "politica",
+    "fixed": false,
+    "gender": "f",
+    "outfit": {
+      "t": "pantsuit",
+      "c": "#37414e",
+      "a": "#7a3fb3"
+    },
+    "fallQuote": "Non mi avete vista cadere!",
+    "faceRect": null
+  },
+  {
+    "id": "grazia-deledda",
+    "name": "Grazia Deledda",
+    "years": "1871–1936",
+    "role": "Nobel per la letteratura",
+    "faceImage": "assets/faces/grazia-deledda.jpg",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Grazia_Deledda_1926.jpg",
+    "license": "Public domain",
+    "author": "Nobel Foundation",
+    "category": "cultura",
+    "fixed": false,
+    "gender": "f",
+    "outfit": {
+      "t": "gown",
+      "c": "#2a2430",
+      "a": "#6a6474"
+    },
+    "fallQuote": "Canne al vento, io pure!",
+    "faceRect": null
+  },
+  {
+    "id": "natalia-ginzburg",
+    "name": "Natalia Ginzburg",
+    "years": "1916–1991",
+    "role": "Scrittrice",
+    "faceImage": "assets/faces/natalia-ginzburg.jpg",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Natalia_Ginzburg.jpg",
+    "license": "CC BY-SA 4.0",
+    "author": "Unknown authorUnknown author",
+    "category": "cultura",
+    "fixed": false,
+    "gender": "f",
+    "outfit": {
+      "t": "dress",
+      "c": "#4a3a3f",
+      "a": "#8a6f3a"
+    },
+    "fallQuote": "Lessico famigliare: AIUTO!",
+    "faceRect": null
+  },
+  {
+    "id": "dacia-maraini",
+    "name": "Dacia Maraini",
+    "years": "1936–",
+    "role": "Scrittrice",
+    "faceImage": "assets/faces/dacia-maraini.jpg",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Dacia_Maraini_-_Buch_Wien_2025.JPG",
+    "license": "CC BY-SA 4.0",
+    "author": "C.Stadler/Bwag",
+    "category": "cultura",
+    "fixed": false,
+    "gender": "f",
+    "outfit": {
+      "t": "dress",
+      "c": "#3a5a8c",
+      "a": "#d8d2e0"
+    },
+    "fallQuote": "Che lunga vita, che volo!",
+    "faceRect": null
+  },
+  {
+    "id": "franca-rame",
+    "name": "Franca Rame",
+    "years": "1929–2013",
+    "role": "Attrice e attivista",
+    "faceImage": "assets/faces/franca-rame.jpg",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Franca_Rame_senato.jpg",
+    "license": "CC BY 3.0 it",
+    "author": "Unknown authorUnknown author",
+    "category": "spettacolo",
+    "fixed": false,
+    "gender": "f",
+    "outfit": {
+      "t": "dress",
+      "c": "#c0293f",
+      "a": "#ffd23f"
+    },
+    "fallQuote": "Coppia aperta, vuoto sotto!",
+    "faceRect": null
+  },
+  {
+    "id": "franca-valeri",
+    "name": "Franca Valeri",
+    "years": "1920–2020",
+    "role": "Attrice comica",
+    "faceImage": "assets/faces/franca-valeri.jpg",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Franca_Valeri_2011.jpg",
+    "license": "CC BY 2.0",
+    "author": "Associazione Amici di Piero Chiara",
+    "category": "spettacolo",
+    "fixed": false,
+    "gender": "f",
+    "outfit": {
+      "t": "dress",
+      "c": "#2a2430",
+      "a": "#d8d2e0"
+    },
+    "fallQuote": "La sora Cecioni non vola!",
+    "faceRect": null
+  },
+  {
+    "id": "giulietta-masina",
+    "name": "Giulietta Masina",
+    "years": "1921–1994",
+    "role": "Attrice",
+    "faceImage": "assets/faces/giulietta-masina.jpg",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Giulietta_Masina_(1966).jpg",
+    "license": "CC BY-SA 3.0 nl",
+    "author": "Eric Koch for Anefo",
+    "category": "spettacolo",
+    "fixed": false,
+    "gender": "f",
+    "outfit": {
+      "t": "dress",
+      "c": "#7a9e6b",
+      "a": "#f4e04d"
+    },
+    "fallQuote": "La strada finisce qui!",
+    "faceRect": null
+  },
+  {
+    "id": "gina-lollobrigida",
+    "name": "Gina Lollobrigida",
+    "years": "1927–2023",
+    "role": "Attrice",
+    "faceImage": "assets/faces/gina-lollobrigida.jpg",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Ivo_Lollobrigida_2.jpg",
+    "license": "CC BY-SA 3.0",
+    "author": "Ivo Bulanda",
+    "category": "spettacolo",
+    "fixed": false,
+    "gender": "f",
+    "outfit": {
+      "t": "dress",
+      "c": "#b3245a",
+      "a": "#ffd23f"
+    },
+    "fallQuote": "La Bersagliera plana!",
+    "faceRect": null
+  },
+  {
+    "id": "claudia-cardinale",
+    "name": "Claudia Cardinale",
+    "years": "1938–2025",
+    "role": "Attrice",
+    "faceImage": "assets/faces/claudia-cardinale.jpg",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Claudia_Cardinale-signed.jpg",
+    "license": "Public domain",
+    "author": "Unknown authorUnknown author",
+    "category": "spettacolo",
+    "fixed": false,
+    "gender": "f",
+    "outfit": {
+      "t": "dress",
+      "c": "#c8871f",
+      "a": "#201c26"
+    },
+    "fallQuote": "C'era una volta il suolo!",
+    "faceRect": null
+  },
+  {
+    "id": "ornella-vanoni",
+    "name": "Ornella Vanoni",
+    "years": "1934–2025",
+    "role": "Cantante",
+    "faceImage": "assets/faces/ornella-vanoni.jpg",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Ornella_Vanoni_1960s.jpg",
+    "license": "Public domain",
+    "author": "Unknown (Mondadori Publishers)",
+    "category": "spettacolo",
+    "fixed": false,
+    "gender": "f",
+    "outfit": {
+      "t": "gown",
+      "c": "#556b7a",
+      "a": "#d8d2e0"
+    },
+    "fallQuote": "Senza fine... anzi no!",
+    "faceRect": null
+  },
+  {
+    "id": "patty-pravo",
+    "name": "Patty Pravo",
+    "years": "1948–",
+    "role": "Cantante",
+    "faceImage": "assets/faces/patty-pravo.jpg",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Patty_Pravo_2013_retuschiert.jpg",
+    "license": "CC BY-SA 3.0",
+    "author": "DanielBianchi4, derivative work Lämpel",
+    "category": "spettacolo",
+    "fixed": false,
+    "gender": "f",
+    "outfit": {
+      "t": "dress",
+      "c": "#ececf2",
+      "a": "#6b4fb3"
+    },
+    "fallQuote": "La bambola si rompe!",
+    "faceRect": null
+  },
+  {
+    "id": "laura-pausini",
+    "name": "Laura Pausini",
+    "years": "1974–",
+    "role": "Cantante",
+    "faceImage": "assets/faces/laura-pausini.jpg",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Laura_Pausini_a_Sanremo_2026_(headshot)_(cropped).jpg",
+    "license": "CC BY-SA 4.0",
+    "author": "Ferdinando Traversa",
+    "category": "spettacolo",
+    "fixed": false,
+    "gender": "f",
+    "outfit": {
+      "t": "pantsuit",
+      "c": "#2b3a55",
+      "a": "#ffd23f"
+    },
+    "fallQuote": "La solitudine del volo!",
+    "faceRect": null
+  },
+  {
+    "id": "milena-gabanelli",
+    "name": "Milena Gabanelli",
+    "years": "1954–",
+    "role": "Giornalista",
+    "faceImage": "assets/faces/milena-gabanelli.jpg",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Milena_Gabanelli_by_Paolo_Visone_-_International_Journalism_Festival_2011_(cropped).jpg",
+    "license": "CC BY-SA 2.0",
+    "author": "Paolo Visone / International Journalism Festival",
+    "category": "cultura",
+    "fixed": false,
+    "gender": "f",
+    "outfit": {
+      "t": "pantsuit",
+      "c": "#4a4a55",
+      "a": "#ececf2"
+    },
+    "fallQuote": "Report: torre non a norma!",
+    "faceRect": null
+  },
+  {
+    "id": "lilli-gruber",
+    "name": "Lilli Gruber",
+    "years": "1957–",
+    "role": "Giornalista",
+    "faceImage": "assets/faces/lilli-gruber.jpg",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Dietlinde_Gruber_2_(cropped).jpg",
+    "license": "CC BY-SA 4.0",
+    "author": "Lothlorien1994",
+    "category": "cultura",
+    "fixed": false,
+    "gender": "f",
+    "outfit": {
+      "t": "skirtsuit",
+      "c": "#c0293f",
+      "a": "#201c26"
+    },
+    "fallQuote": "Otto e mezzo di caduta!",
+    "faceRect": null
+  },
+  {
+    "id": "fabiola-gianotti",
+    "name": "Fabiola Gianotti",
+    "years": "1960–",
+    "role": "Direttrice del CERN",
+    "faceImage": "assets/faces/fabiola-gianotti.jpg",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Dr_Fabiola_Gianotti.jpg",
+    "license": "CC BY 4.0",
+    "author": "Maximilien Brice",
+    "category": "cultura",
+    "fixed": false,
+    "gender": "f",
+    "outfit": {
+      "t": "pantsuit",
+      "c": "#33384a",
+      "a": "#8fb3c9"
+    },
+    "fallQuote": "Colpa del bosone di Higgs!",
+    "faceRect": null
+  },
+  {
+    "id": "bebe-vio",
+    "name": "Bebe Vio",
+    "years": "1997–",
+    "role": "Schermitrice paralimpica",
+    "faceImage": "assets/faces/bebe-vio.jpg",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Beatrice_Vio_2018_(cropped).jpg",
+    "license": "CC BY-SA 3.0",
+    "author": "Scott335",
+    "category": "sport",
+    "fixed": false,
+    "gender": "f",
+    "outfit": {
+      "t": "fencing",
+      "c": "#f4f4f8",
+      "a": "#c9ced8"
+    },
+    "fallQuote": "Touché, stoccata finale!",
+    "faceRect": null
+  },
+  {
+    "id": "valentina-vezzali",
+    "name": "Valentina Vezzali",
+    "years": "1974–",
+    "role": "Schermitrice",
+    "faceImage": "assets/faces/valentina-vezzali.jpg",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Valentina_Vezzali_daticamera.jpg",
+    "license": "CC BY-SA 4.0",
+    "author": "Camera dei deputati",
+    "category": "sport",
+    "fixed": false,
+    "gender": "f",
+    "outfit": {
+      "t": "fencing",
+      "c": "#f4f4f8",
+      "a": "#d8b02a"
+    },
+    "fallQuote": "Sei ori e un tonfo!",
+    "faceRect": null
+  }
+];
