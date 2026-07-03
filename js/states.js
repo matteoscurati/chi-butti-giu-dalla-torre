@@ -206,8 +206,11 @@
   function fighterAt(wx, wy) {
     for (const [f, side] of [[st.left, "left"], [st.right, "right"]]) {
       if (!f || f.rising) continue;
-      const bx = f.x - SW / 2 - 10, by = f.y - (SH + 16) - 6;
-      if (wx >= bx && wx <= bx + SW + 20 && wy >= by && wy <= by + SH + 16 + 12) return side;
+      // bounds dall'intero sprite: la testa (HEAD) sporge oltre il box corpo,
+      // e sway+tremble spostano il disegno fino a ±2K
+      const hw = SP.HEAD / 2 + 12;
+      const bx = f.x - hw, by = f.y - (SH + 24) - 6;
+      if (wx >= bx && wx <= bx + hw * 2 && wy >= by && wy <= by + SH + 24 + 12) return side;
     }
     return null;
   }

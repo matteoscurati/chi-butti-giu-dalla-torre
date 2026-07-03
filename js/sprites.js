@@ -526,9 +526,11 @@
   function drawHoverMark(ctx, px, py, t) {
     ctx.save();
     ctx.translate(px, py);
+    // bounds dell'intero sprite: la testa (HEAD) è più larga e più alta del box corpo
+    const bx = -HEAD / 2 - 2 * K, bw = HEAD + 4 * K;
+    const by = -(SH - HEAD_CY) - HEAD / 2 - 3 * K, bh = -by + K;
     if (Math.floor(t * 12) % 2 === 0) {
-      // cornice spessa K con gap 2K attorno allo sprite
-      const bx = -SW / 2 - 2 * K, by = -SH - 2 * K, bw = SW + 4 * K, bh = SH + 3 * K;
+      // cornice spessa K con gap 2K attorno allo sprite (testa inclusa)
       ctx.fillStyle = U.palette.red;
       ctx.fillRect(bx, by, bw, K);
       ctx.fillRect(bx, by + bh - K, bw, K);
@@ -537,7 +539,7 @@
     }
     // freccia stabile (non lampeggia): punta 1/3/5 blocchi + gambo 3×2, bob a 2 frame
     const bob = (Math.floor(t * 4) % 2) * K;
-    const tipY = -(SH - HEAD_CY) - HEAD / 2 - 2 * K - bob;
+    const tipY = by - 2 * K - bob;
     ctx.fillStyle = U.palette.gold;
     for (let r = 0; r < 3; r++) ctx.fillRect(-(2 * r + 1) * K / 2, tipY - (r + 1) * K, (2 * r + 1) * K, K);
     ctx.fillRect(-3 * K / 2, tipY - 5 * K, 3 * K, 2 * K);
@@ -551,7 +553,9 @@
     const e = S.store[id]; if (!e) return;
     opts = opts || {};
     const fast = opts.vx != null;
-    const qi = ((Math.floor(angle / (Math.PI / 2)) % 4) + 4) % 4;
+    // round (non floor): quantizzazione simmetrica — con omega negativo floor
+    // farebbe scattare il corpo a 270° al primo frame invece che a −45°
+    const qi = ((Math.round(angle / (Math.PI / 2)) % 4) + 4) % 4;
     const frame = fast
       ? (qi % 2 ? e.frames.flailB : e.frames.flailA)      // 8 pose distinte nel tumbling
       : ((Math.floor((t || 0) * 10) % 2) ? e.frames.flailB : e.frames.flailA);
