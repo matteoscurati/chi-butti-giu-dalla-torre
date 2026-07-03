@@ -120,6 +120,7 @@
     };
     UI.onHover = (side) => {
       if (SM.currentPhase() !== "await") return;
+      if (side && SM.st.hoverSide !== side) Game.audio.hover();  // suono anche da tastiera/nameplate/touch
       SM.st.hoverSide = side;
       if (side) UI.highlight(side); else UI.clearHighlight();
     };
@@ -158,11 +159,16 @@
     }, { passive: true });
 
     // ---- tastiera: ←/→ (o A/D) seleziona, Invio/Spazio conferma o salta,
-    //      Esc annulla la selezione, M audio on/off ----
+    //      Esc annulla la selezione, M audio on/off, F turbo ×4 ----
     window.addEventListener("keydown", (ev) => {
       const k = ev.key;
       if (k === "m" || k === "M") {
         const btn = document.getElementById("mute-btn");
+        if (btn) btn.click();
+        return;
+      }
+      if (k === "f" || k === "F") {
+        const btn = document.getElementById("speed-btn");
         if (btn) btn.click();
         return;
       }

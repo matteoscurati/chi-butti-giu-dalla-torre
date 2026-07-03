@@ -37,6 +37,7 @@
       shareBtn: document.getElementById("share-btn"),
       rankingList: document.getElementById("ranking-list"),
       muteBtn: document.getElementById("mute-btn"),
+      speedBtn: document.getElementById("speed-btn"),
       canvas: document.getElementById("game"),
     };
 
@@ -55,6 +56,14 @@
       const m = Game.audio.toggleMute();
       el.muteBtn.textContent = "AUDIO: " + (m ? "OFF" : "ON");
     });
+    // turbo ×4 (equivale al flag ?fast, ma attivabile in partita: tasto F o click)
+    el.speedBtn.addEventListener("click", () => {
+      const fast = !(Game.flags.timescale > 1);
+      Game.flags.fast = fast;
+      Game.flags.timescale = fast ? 4 : 1;
+      el.speedBtn.textContent = "⏩ x" + (fast ? 4 : 1);
+    });
+    el.speedBtn.textContent = "⏩ x" + (Game.flags.timescale > 1 ? 4 : 1);  // riflette ?fast=1
 
     UI.buildRanking((Game.cfg.MATCH_CHALLENGERS || 15) + 1);
   };

@@ -47,7 +47,8 @@ Qualsiasi server statico va bene (`npx serve`, ecc.).
   ai **CREDITI**.
 - **Tastiera**: `←`/`→` (o `A`/`D`) selezionano il bersaglio, `Invio`/`Spazio`
   confermano (e avviano/saltano/rigiocano), `Esc` annulla la selezione, `M`
-  attiva/disattiva l'audio.
+  attiva/disattiva l'audio, `F` attiva il turbo ×4 (anche dal pulsante ⏩ in
+  basso).
 
 ## Flag di debug (query string)
 

@@ -7,6 +7,17 @@ progetto adotta il [Semantic Versioning](https://semver.org/lang/it/): MAJOR
 per cambi incompatibili al dataset/formato, MINOR per nuove funzionalità,
 PATCH per correzioni. Ogni release pubblicata corrisponde a un tag git `vX.Y.Z`.
 
+## [1.2.0] — 2026-07-03
+
+### Aggiunto
+- **Turbo ×4**: tasto `F` o pulsante ⏩ nel footer accelerano il gioco in
+  partita (stesso effetto del flag `?fast=1`, ma attivabile al volo, anche da
+  mobile).
+
+### Corretto
+- Il suono di selezione ora suona anche scegliendo il bersaglio **da tastiera**
+  (e da nameplate/touch): prima era legato al solo hover del mouse sul canvas.
+
 ## [1.1.2] — 2026-07-03
 
 ### Corretto
@@ -107,6 +118,7 @@ Prima release pubblica.
   pixel-art con abiti parametrici, torre medievale, fisica di caduta, classifica
   a eliminazione, SFX chiptune WebAudio, funzionante anche da `file://`.
 
+[1.2.0]: https://github.com/matteoscurati/chi-butti-giu-dalla-torre/compare/v1.1.2...v1.2.0
 [1.1.2]: https://github.com/matteoscurati/chi-butti-giu-dalla-torre/compare/v1.1.1...v1.1.2
 [1.1.1]: https://github.com/matteoscurati/chi-butti-giu-dalla-torre/compare/v1.1.0...v1.1.1
 [1.1.0]: https://github.com/matteoscurati/chi-butti-giu-dalla-torre/compare/v1.0.0...v1.1.0
