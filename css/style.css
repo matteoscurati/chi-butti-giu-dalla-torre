@@ -251,6 +251,9 @@ body::after {
 .title-accent { color: #fff; text-shadow: 3px 3px 0 var(--red), 5px 5px 0 var(--ink); }
 .title-sub { margin-top: 16px; font-size: 9px; color: var(--dim); line-height: 1.5; }
 .title-disclaimer { margin-top: 22px; font-size: 7px; color: #8f7db0; line-height: 1.7; }
+.title-author { margin-top: 14px; font-size: 7px; color: var(--dim); line-height: 1.7; }
+.title-link { color: var(--gold2); text-decoration: none; }
+.title-link:hover { color: var(--gold); text-decoration: underline; }
 
 #loading-row { margin-top: 24px; }
 #loading-bar {

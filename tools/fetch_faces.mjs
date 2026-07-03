@@ -10,11 +10,12 @@
 //   - characters.json  (dataset canonico, deliverable)
 //   - js/data.js       (window.CHARACTERS, caricato dal gioco anche da file://)
 //   - CREDITS.md        (fonte + autore + licenza per ogni volto)
+//   - credits.html      (pagina crediti stilata, linkata dal gioco)
 //
 // Uso:
 //   node tools/fetch_faces.mjs           scarica i mancanti e rigenera i file
 //   node tools/fetch_faces.mjs --force   riscarica tutto
-//   node tools/fetch_faces.mjs --check   valida (61 volti, licenze, allineamento)
+//   node tools/fetch_faces.mjs --check   valida (volti, licenze, allineamento)
 
 import { writeFile, readFile, mkdir, readdir, access } from "node:fs/promises";
 import { existsSync } from "node:fs";
@@ -372,6 +373,157 @@ async function writeOutputs(records) {
   md += "- **Press Start 2P** — CodeMan38. SIL Open Font License 1.1 (`assets/fonts/OFL.txt`).\n";
   md += "  Fonte: https://fonts.google.com/specimen/Press+Start+2P\n";
   await writeFile(join(ROOT, "CREDITS.md"), md);
+
+  // credits.html — pagina crediti stilata, linkata dal footer del gioco
+  await writeFile(join(ROOT, "credits.html"), creditsHtml(records));
+}
+
+const REPO_URL = "https://github.com/matteoscurati/chi-butti-giu-dalla-torre";
+
+function escHtml(s) {
+  return String(s == null ? "" : s)
+    .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
+}
+
+// classe cromatica del badge licenza (PD verde, CC BY azzurro, CC BY-SA arancio)
+function licenseClass(license) {
+  const l = (license || "").toLowerCase();
+  if (l.includes("public domain") || l === "pd" || l.startsWith("pd ")) return "lic-pd";
+  if (l.includes("by-sa")) return "lic-bysa";
+  if (l.includes("cc by")) return "lic-by";
+  return "lic-other";
+}
+
+function creditsHtml(records) {
+  const sorted = [...records].sort((a, b) => a.name.localeCompare(b.name, "it"));
+  const rows = sorted.map((r) => `      <li class="credit">
+        <img src="${escHtml(r.faceImage || "")}" alt="" loading="lazy" />
+        <div class="who">
+          <div class="name">${escHtml(r.name)}</div>
+          <div class="role">${escHtml(r.years)} · ${escHtml(r.role)}</div>
+          <div class="meta">foto: ${escHtml(r.author || "sconosciuto")}</div>
+        </div>
+        <div class="right">
+          <span class="lic ${licenseClass(r.license)}">${escHtml(r.license || "—")}</span>
+          ${r.sourceUrl ? `<a class="src" href="${escHtml(r.sourceUrl)}" target="_blank" rel="noopener">Commons ↗</a>` : ""}
+        </div>
+      </li>`).join("\n");
+
+  const subs = records.filter((r) => r.substituted)
+    .map((r) => `      <li><strong>${escHtml(r.name)}</strong> — ${escHtml(r.substituted)}</li>`)
+    .join("\n");
+
+  return `<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Crediti — Chi butti giù dalla torre?</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><text y='14' font-size='14'>🏰</text></svg>" />
+  <style>
+    /* GENERATO da tools/fetch_faces.mjs — non modificare a mano. */
+    @font-face {
+      font-family: "Press Start 2P";
+      src: url("assets/fonts/PressStart2P-Regular.ttf") format("truetype");
+      font-display: swap;
+    }
+    :root {
+      --bg: #17111f; --panel: #1c1230; --row: #0f0a1c; --border: #4b356f;
+      --gold: #ffd23f; --gold2: #ff9f1c; --red: #ff2e4c;
+      --text: #f4ecff; --dim: #b9a7d6; --ink: #0c0812;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background:
+        radial-gradient(circle at 30% 10%, #2c1c44 0%, transparent 55%),
+        radial-gradient(circle at 80% 90%, #201640 0%, transparent 55%),
+        var(--bg);
+      color: var(--text);
+      font-family: "Press Start 2P", "Courier New", monospace;
+      min-height: 100vh;
+      padding: 28px 16px 60px;
+    }
+    .wrap { max-width: 820px; margin: 0 auto; }
+    h1 {
+      font-size: 22px; line-height: 1.4; color: var(--gold); text-align: center;
+      text-shadow: 3px 3px 0 var(--ink), 5px 5px 0 var(--red);
+      margin: 18px 0 6px;
+    }
+    .back {
+      display: inline-block; font-size: 9px; color: var(--dim);
+      text-decoration: none; border: 2px solid var(--border);
+      background: var(--panel); padding: 8px 10px;
+    }
+    .back:hover { color: var(--gold); border-color: var(--gold); }
+    .sub { text-align: center; font-size: 8px; color: var(--dim); line-height: 1.9; margin: 14px auto 26px; max-width: 640px; }
+    h2 {
+      font-size: 12px; color: var(--gold2); margin: 34px 0 12px;
+      border-bottom: 2px solid var(--border); padding-bottom: 8px;
+    }
+    ul { list-style: none; }
+    .credit {
+      display: flex; align-items: center; gap: 14px;
+      background: var(--panel); border: 1px solid #2c1f45; border-radius: 3px;
+      padding: 8px 12px; margin-bottom: 6px;
+    }
+    .credit:nth-child(even) { background: var(--row); }
+    .credit img {
+      width: 48px; height: 48px; object-fit: cover;
+      image-rendering: pixelated; border: 2px solid #000; background: #000; flex: 0 0 48px;
+    }
+    .who { flex: 1 1 auto; min-width: 0; }
+    .name { font-size: 10px; color: var(--text); }
+    .role { font-size: 7px; color: var(--dim); margin-top: 5px; }
+    .meta { font-size: 7px; color: #8f7db0; margin-top: 5px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .right { flex: 0 0 auto; display: flex; flex-direction: column; align-items: flex-end; gap: 6px; }
+    .lic { font-size: 7px; padding: 4px 6px; border-radius: 3px; color: var(--ink); white-space: nowrap; }
+    .lic-pd { background: #6daa2c; }
+    .lic-by { background: #6dc2ca; }
+    .lic-bysa { background: #d27d2c; }
+    .lic-other { background: #8595a1; }
+    .src { font-size: 7px; color: var(--dim); text-decoration: none; }
+    .src:hover { color: var(--gold); }
+    .subs li, .foot li { font-size: 8px; color: var(--dim); line-height: 2; }
+    .note { font-size: 8px; color: var(--dim); line-height: 2; }
+    .note a, .subs a { color: var(--gold2); text-decoration: none; }
+    .note a:hover { color: var(--gold); }
+    @media (max-width: 560px) {
+      .credit { flex-wrap: wrap; }
+      .right { flex-direction: row; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <a class="back" href="index.html">← TORNA AL GIOCO</a>
+    <h1>CREDITI</h1>
+    <p class="sub">Progetto satirico <strong>Chi butti giù dalla torre?</strong> Le foto dei volti
+    provengono da Wikimedia Commons e sono state ritagliate, ridimensionate e pixelizzate:
+    i derivati mantengono la licenza dell'originale. Per le licenze CC BY / CC BY-SA
+    l'attribuzione va all'autore indicato; per il pubblico dominio la fonte è tracciata comunque.</p>
+
+    <h2>VOLTI (${records.length}, in ordine alfabetico)</h2>
+    <ul>
+${rows}
+    </ul>
+
+    <h2>SOSTITUZIONI</h2>
+    <ul class="subs">
+${subs}
+    </ul>
+
+    <h2>FONT</h2>
+    <p class="note"><strong>Press Start 2P</strong> — CodeMan38, SIL Open Font License 1.1
+    (<code>assets/fonts/OFL.txt</code>).</p>
+
+    <h2>CODICE</h2>
+    <p class="note">Un gioco di <strong>Matteo Scurati</strong> · codice sotto licenza MIT ·
+    <a href="${REPO_URL}" target="_blank" rel="noopener">${REPO_URL.replace("https://", "")}</a></p>
+  </div>
+</body>
+</html>
+`;
 }
 
 // --- Check mode ------------------------------------------------------------
@@ -424,7 +576,7 @@ async function main() {
     for (const c of prevJson) prev[c.id] = c;
   } catch { /* prima esecuzione */ }
 
-  // records inizializzati con TUTTI e 61 (merge metadati in cache).
+  // records inizializzati con TUTTO il roster (merge metadati in cache).
   const records = ROSTER.map((char) => {
     const pm = prev[char.id] || {};
     return {
@@ -445,7 +597,7 @@ async function main() {
 
   // Chi ha bisogno di metadati (licenza/fonte) o del file.
   const needMeta = records.filter((r) => FORCE || !r.license || !r.sourceUrl || !r.faceImage);
-  console.log(`Da risolvere: ${needMeta.length}/61 (batch).`);
+  console.log(`Da risolvere: ${needMeta.length}/${ROSTER.length} (batch).`);
 
   // 1) Batch: title -> pageimage filename
   const fileById = await pageImagesBatch(needMeta);
@@ -495,12 +647,12 @@ async function main() {
 
   await writeOutputs(records);
   const failed = records.filter((r) => !r.faceImage || !r.license).map((r) => r.name);
-  console.log(`\nScaricati ora: ${done}. Scritti: characters.json, js/data.js, CREDITS.md`);
+  console.log(`\nScaricati ora: ${done}. Scritti: characters.json, js/data.js, CREDITS.md, credits.html`);
   if (failed.length) {
     console.log(`\n⚠ ${failed.length} senza immagine (candidati a sostituzione dalla panchina):`);
     for (const f of failed) console.log("   - " + f);
   } else {
-    console.log("\n✓ Tutti i 61 volti recuperati.");
+    console.log(`\n✓ Tutti i ${ROSTER.length} volti recuperati.`);
   }
 }
 

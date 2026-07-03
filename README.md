@@ -11,7 +11,14 @@ una **frase biografica** mentre precipita.
 
 > Satira. Nessuna persona è stata davvero buttata giù dalla torre.
 
-## Avvio
+![Duello in cima alla torre](docs/screenshot.png)
+
+## Gioca online
+
+**[matteoscurati.github.io/chi-butti-giu-dalla-torre](https://matteoscurati.github.io/chi-butti-giu-dalla-torre/)**
+(GitHub Pages, direttamente da questo repo).
+
+## Avvio locale
 
 **Opzione 1 — apri e gioca.** Fai doppio clic su `index.html` (funziona da
 `file://`, nessuna build necessaria).
@@ -54,23 +61,27 @@ Esempio: `index.html?auto=1&fast=1`.
 
 ```
 index.html            markup + overlay DOM
+credits.html          GENERATA: pagina crediti stilata (link nel footer del gioco)
 css/style.css         estetica arcade (nameplate, classifica, CRT)
 js/
   data.js             GENERATO: window.CHARACTERS (dataset per il runtime)
-  util.js             config + utilità (rng, easing, hash, ...)
+  util.js             config + utilità (rng, easing, hash, pixelEllipse, ...)
   audio.js            SFX chiptune sintetizzati (WebAudio)
   camera.js           camera verticale (pan/follow/shake)
   sprites.js          volto foto (testone) + abito coerente + animazioni
   tower.js            cielo, torre di mattoni, suolo, pila di corpi
   fx.js               particelle, sudore, testo fluttuante, coriandoli
+  share.js            condivisione classifica (card PNG / testo)
   ui.js               nameplate, banner, classifica, risultati
   states.js           macchina a stati (flusso del duello + fisica caduta)
-  main.js             boot, game loop, input, scaling
+  main.js             boot, game loop, input (mouse+tastiera), scaling
 assets/faces/         81 volti (thumb da Wikimedia Commons)
 assets/fonts/         Press Start 2P (+ licenza OFL)
 characters.json       dataset canonico (deliverable)
-CREDITS.md            fonte + autore + licenza di ogni volto
-tools/fetch_faces.mjs script di download volti / generazione dataset
+CREDITS.md            GENERATO: fonte + autore + licenza di ogni volto
+CHANGELOG.md          storia delle versioni (Keep a Changelog + SemVer)
+LICENSE               MIT (codice; i volti mantengono le licenze Commons)
+tools/fetch_faces.mjs script di download volti / generazione dataset+crediti
 ```
 
 ## Dettagli tecnici
@@ -128,11 +139,27 @@ Come da specifica sono state sostituite con figure equivalenti e segnalate in
 - **Marco Pantani** → **Pietro Mennea** (atleta)
 - **Alberto Tomba** → **Dino Zoff** (atleta)
 
+## Versioni e changelog
+
+Il progetto segue il [Semantic Versioning](https://semver.org/lang/it/); ogni
+release è un tag git `vX.Y.Z` e le modifiche sono documentate in
+[`CHANGELOG.md`](CHANGELOG.md) (formato [Keep a Changelog](https://keepachangelog.com/it/1.1.0/)).
+
+## Hosting
+
+Il gioco è 100% statico (niente build, niente backend): qualunque hosting di
+file statici va bene. Questo repo usa **GitHub Pages** (Settings → Pages →
+branch `main`, cartella `/`), che pubblica direttamente da `main` a ogni push.
+Alternative equivalenti: **itch.io** (ottimo per la visibilità come gioco,
+upload zip), **Cloudflare Pages** / **Netlify** (deploy da repo, CDN).
+
 ## Crediti e licenze
 
-- Volti: Wikimedia Commons — fonte, autore e licenza di ciascuno in
-  [`CREDITS.md`](CREDITS.md). Le licenze (PD, CC BY, CC BY-SA) sono mantenute dai
-  derivati pixelizzati.
+- Un gioco di **Matteo Scurati**. Codice sotto licenza [MIT](LICENSE).
+- Volti: Wikimedia Commons — fonte, autore e licenza di ciascuno nella
+  [pagina crediti](https://matteoscurati.github.io/chi-butti-giu-dalla-torre/credits.html)
+  (o [`CREDITS.md`](CREDITS.md)). Le licenze (PD, CC BY, CC BY-SA) sono
+  mantenute dai derivati pixelizzati.
 - Font: **Press Start 2P** di CodeMan38 — SIL Open Font License 1.1
   (`assets/fonts/OFL.txt`).
 
