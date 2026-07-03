@@ -106,8 +106,8 @@
     st.falling = {
       id: v.char.id, char: v.char,
       x: v.x, y: cfg.TOP_Y - SH / 2,
-      vx: outDir * U.rand(130, 175),
-      vy: -160,
+      vx: outDir * U.rand(260, 350),
+      vy: -320,
       angle: 0, omega: U.sign() * U.rand(4.5, 9),
       facing: v.facing,
     };
@@ -126,10 +126,10 @@
     f.y = cfg.GROUND_Y - SH * 0.32;
     const isFinal = st.nextIndex >= st.pool.length;   // ultimo sfidante -> K.O. finale
     FX.spawnBurst(f.x, cfg.GROUND_Y - 4, isFinal ? 46 : 32);
-    FX.shockwave(f.x, cfg.GROUND_Y - 3, { maxR: isFinal ? 78 : 58, squash: 0.3, life: 0.5, color: "235,215,175", width: 4 });
+    FX.shockwave(f.x, cfg.GROUND_Y - 3, { maxR: isFinal ? 156 : 116, squash: 0.3, life: 0.5, color: "235,215,175", width: 8 });
     FX.addDebris(f.x, cfg.GROUND_Y - 4, 4);
     FX.flash(0.5, 0.12);
-    FX.ko(f.x, cfg.GROUND_Y - 58);
+    FX.ko(f.x, cfg.GROUND_Y - 116);
     Game.time.hitStop(isFinal ? 0.16 : 0.09);
     cam.setZoom(1);                                    // termina il punch-in
     cam.addTrauma(isFinal ? 0.9 : 0.68);
@@ -168,7 +168,7 @@
     UI.setRound(st.round, cfg.TOTAL_ROUNDS);
     UI.showBanner();
     A.challenger();
-    FX.spawnPoof(rightX, cfg.TOP_Y - 6);
+    FX.spawnPoof(rightX, cfg.TOP_Y - 12);
     setPhase("enter");
   }
 
@@ -208,8 +208,8 @@
   function fighterAt(wx, wy) {
     for (const [f, side] of [[st.left, "left"], [st.right, "right"]]) {
       if (!f || f.rising) continue;
-      const bx = f.x - SW / 2 - 6, by = f.y - SH - 6;
-      if (wx >= bx && wx <= bx + SW + 12 && wy >= by && wy <= by + SH + 12) return side;
+      const bx = f.x - SW / 2 - 10, by = f.y - (SH + 16) - 6;
+      if (wx >= bx && wx <= bx + SW + 20 && wy >= by && wy <= by + SH + 16 + 12) return side;
     }
     return null;
   }
@@ -236,7 +236,7 @@
         if (st.sweatT > 0.13) {                 // sudore accelerato sul bersaglio
           st.sweatT = 0;
           const f = st.hoverSide === "left" ? st.left : st.right;
-          if (f) FX.spawnSweat(f.x + U.rand(-10, 10), f.y - SH + 4);
+          if (f) FX.spawnSweat(f.x + U.rand(-20, 20), f.y - SH + 8);
         }
       }
       if (Game.flags.auto && st.t > 0.25) doPick(Math.random() < 0.5 ? "left" : "right");
@@ -245,16 +245,16 @@
       const dur = 0.16;
       const p = U.clamp(st.t / dur, 0, 1);
       const s = st.push.survivor;
-      s.x = st.push.sBaseX + st.push.dir * 13 * Math.sin(p * Math.PI);
+      s.x = st.push.sBaseX + st.push.dir * 26 * Math.sin(p * Math.PI);
       // contatto della spinta: hit-stop + flash + shockwave + kick orizzontale
       if (p >= 0.5 && !st.push.hit) {
         st.push.hit = true;
         const v = st.push.victim;
-        const cx = v.x - st.push.dir * 10, cy = cfg.TOP_Y - SH * 0.55;
+        const cx = v.x - st.push.dir * 20, cy = cfg.TOP_Y - SH * 0.55;
         Game.time.hitStop(0.08);
         FX.flash(0.3, 0.1);
-        FX.shockwave(cx, cy, { maxR: 30, life: 0.3, color: "255,240,210", width: 3 });
-        cam.punch(st.push.dir * 6, 0, 0.32);
+        FX.shockwave(cx, cy, { maxR: 60, life: 0.3, color: "255,240,210", width: 6 });
+        cam.punch(st.push.dir * 12, 0, 0.32);
       }
       if (p >= 1) { s.x = st.push.sBaseX; launchVictim(); }
     }
@@ -266,8 +266,8 @@
       f.y += f.vy * dt;
       f.angle += f.omega * dt;
       // rimbalza sui bordi del mondo
-      if (f.x < 12) { f.x = 12; f.vx = Math.abs(f.vx) * 0.6; }
-      if (f.x > cfg.W - 12) { f.x = cfg.W - 12; f.vx = -Math.abs(f.vx) * 0.6; }
+      if (f.x < 24) { f.x = 24; f.vx = Math.abs(f.vx) * 0.6; }
+      if (f.x > cfg.W - 24) { f.x = cfg.W - 24; f.vx = -Math.abs(f.vx) * 0.6; }
       cam.follow(f.y);
       if (f.y >= cfg.GROUND_Y - SH * 0.32) onImpact();
     }
@@ -316,7 +316,7 @@
 
     if (st.phase === "victory" && st.champion) {
       // vincitore che esulta con saltelli sulla piattaforma
-      const jump = Math.abs(Math.sin(st.t * 5)) * 12;
+      const jump = Math.abs(Math.sin(st.t * 5)) * 24;
       SP.drawBig(ctx, st.champion.char.id, st.champion.x, cfg.TOP_Y - jump, 1, "cheer");
     } else {
       // campione/sfidante in cima (idle), con evidenziazione al hover
@@ -362,10 +362,10 @@
     ctx.save();
     ctx.textAlign = "center"; ctx.textBaseline = "middle";
     const s = 1 + Math.sin(t * 4) * 0.06;
-    ctx.translate(cfg.W / 2, 90);
+    ctx.translate(cfg.W / 2, 100);
     ctx.scale(s, s);
-    ctx.font = '30px ' + cfg.FONT;
-    ctx.lineWidth = 8; ctx.lineJoin = "round"; ctx.strokeStyle = "#c0293f";
+    ctx.font = '48px ' + cfg.FONT;
+    ctx.lineWidth = 12; ctx.lineJoin = "round"; ctx.strokeStyle = "#c0293f";
     ctx.strokeText("WINNER!", 0, 0);
     ctx.fillStyle = "#ffd23f";
     ctx.fillText("WINNER!", 0, 0);

@@ -26,9 +26,12 @@
     const availW = wrap.clientWidth, availH = wrap.clientHeight;
     if (availW <= 0 || availH <= 0) return;
     const border = 8; // 4px per lato di #screen
+    // scala a passi di 0.25: con blocchi d'arte da 4px, ogni quarto rende
+    // il blocco a dimensione intera (5/6/7px) restando pixel-perfect e
+    // sfruttando meglio lo schermo rispetto alla sola scala intera.
     const scale = Math.max(1, Math.floor(
-      Math.min((availW - border) / cfg.W, (availH - border) / cfg.H)
-    ));
+      4 * Math.min((availW - border) / cfg.W, (availH - border) / cfg.H)
+    ) / 4);
     screen.style.width = (cfg.W * scale) + "px";
     screen.style.height = (cfg.H * scale) + "px";
     document.documentElement.style.setProperty("--scale", scale);

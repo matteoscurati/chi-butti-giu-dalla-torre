@@ -8,8 +8,8 @@
   const T = (Game.tower = {});
   const CX = cfg.TOWER_CX, R = cfg.TOWER_R;
   const TOP = cfg.TOP_Y;                 // superficie piattaforma (piedi)
-  const CACHE_TOP = TOP - 28;            // include i merli posteriori
-  const CACHE_W = R * 2 + 16;
+  const CACHE_TOP = TOP - 56;            // include i merli posteriori
+  const CACHE_W = R * 2 + 24;
   const CACHE_H = cfg.GROUND_Y - CACHE_TOP + 4;
 
   let towerCache = null;
@@ -36,13 +36,13 @@
       const b = U.clamp(Math.round(parseInt(hex.slice(5, 7), 16) * mult), 0, 255);
       return "#" + ((1 << 24) + (r << 16) + (gg << 8) + b).toString(16).slice(1);
     }
-    const brickH = 12, brickW = 26, mortar = "#3d2f2a";
+    const brickH = 18, brickW = 40, mortar = "#3d2f2a";
     const bricks = ["#8a6552", "#7d5a48", "#946b56", "#71503f", "#835d4b"];
     // rampa: 7 livelli di luce × 5 colori base = 35 tinte, calcolate una volta
     const SHADE_MULT = [1.12, 1.0, 0.84, 0.68, 0.52, 0.40, 0.30];
     const ramp = SHADE_MULT.map((m) => bricks.map((hex) => shadeHex(hex, m)));
     const THRESH = [0.32, 0.55, 0.75, 0.90];   // confini colonna in frazione di R
-    // fondo di malta opaco: i gap di 1px tra mattoni non devono lasciar trasparire il cielo
+    // fondo di malta opaco: i gap di 2px tra mattoni non devono lasciar trasparire il cielo
     g.fillStyle = mortar;
     g.fillRect(left, bodyTop, R * 2, bodyBot - bodyTop);
     for (let y = bodyTop; y < bodyBot; y += brickH) {
@@ -53,7 +53,7 @@
       const extraDark = distBot < 10 * brickH ? 2 : distBot < 20 * brickH ? 1 : 0;
       for (let x = left - brickW; x < right + brickW; x += brickW) {
         const bx = x + off;
-        const w = Math.min(bx + brickW - 1, right) - Math.max(bx, left);
+        const w = Math.min(bx + brickW - 2, right) - Math.max(bx, left);
         if (w <= 0) continue;
         const brickIdx = U.hash(row * 131 + Math.round(bx)) % bricks.length;
         // livello colonna: distanza dal centro come frazione di R (0 = chiaro, 4 = scuro)
@@ -64,71 +64,71 @@
           if (Math.abs(d - THRESH[ti]) <= 0.04) { level = (row & 1) ? ti + 1 : ti; break; }
         }
         g.fillStyle = ramp[Math.min(6, level + extraDark)][brickIdx];
-        g.fillRect(Math.max(bx, left), y, w, brickH - 1);
+        g.fillRect(Math.max(bx, left), y, w, brickH - 2);
       }
       // mortaio orizzontale
       g.fillStyle = mortar;
-      g.fillRect(left, y + brickH - 1, R * 2, 1);
+      g.fillRect(left, y + brickH - 2, R * 2, 2);
     }
 
     // bordi netti
     g.fillStyle = "#2c211d";
-    g.fillRect(left - 1, bodyTop, 2, bodyBot - bodyTop);
-    g.fillRect(right - 1, bodyTop, 2, bodyBot - bodyTop);
+    g.fillRect(left - 2, bodyTop, 4, bodyBot - bodyTop);
+    g.fillRect(right - 2, bodyTop, 4, bodyBot - bodyTop);
 
     // --- merli posteriori (dietro ai personaggi) ---
-    const merlonW = 16, gap = 10, my = toLocal(TOP - 26);
+    const merlonW = 32, gap = 20, my = toLocal(TOP - 52);
     g.fillStyle = "#6f4f3f";
     for (let x = left + 2; x < right - merlonW; x += merlonW + gap) {
-      g.fillRect(x, my, merlonW, 22);
+      g.fillRect(x, my, merlonW, 44);
     }
     g.fillStyle = "#5a3f32";
     for (let x = left + 2; x < right - merlonW; x += merlonW + gap) {
-      g.fillRect(x, my, merlonW, 3);
+      g.fillRect(x, my, merlonW, 6);
     }
 
     // --- cornicione / mensole appena sotto la piattaforma ---
     g.fillStyle = "#6a4c3d";
-    g.fillRect(left - 5, bodyTop + 2, R * 2 + 10, 8);
+    g.fillRect(left - 10, bodyTop + 4, R * 2 + 20, 16);
     g.fillStyle = "#4a342a";
-    g.fillRect(left - 5, bodyTop + 10, R * 2 + 10, 2);
+    g.fillRect(left - 10, bodyTop + 20, R * 2 + 20, 4);
 
     // --- piattaforma (ellissi pixel) ---
-    U.pixelEllipse(g, ox, bodyTop + 4, R - 4, Math.round((R - 4) * 0.32), "#8c8494");
-    U.pixelEllipse(g, ox, bodyTop + 6, R - 8, Math.round((R - 8) * 0.3), "#6c6478");
+    U.pixelEllipse(g, ox, bodyTop + 8, R - 8, Math.round((R - 8) * 0.32), "#8c8494");
+    U.pixelEllipse(g, ox, bodyTop + 12, R - 16, Math.round((R - 16) * 0.3), "#6c6478");
     // lastre (linee a gradini pixel)
     g.fillStyle = "#5a5266";
     for (let a = -2; a <= 2; a++) {
-      for (let yy = 0; yy <= 12; yy += 2) {
-        const x = Math.round(U.lerp(ox + a * 14, ox + a * 22, yy / 12));
-        g.fillRect(x, bodyTop + 2 + yy, 1, 2);
+      for (let yy = 0; yy <= 24; yy += 4) {
+        const x = Math.round(U.lerp(ox + a * 24, ox + a * 38, yy / 24));
+        g.fillRect(x, bodyTop + 2 + yy, 2, 4);
       }
     }
 
     // --- porta alla base + finestrelle ---
     g.fillStyle = "#241814";
-    const doorY = bodyBot - 54;
-    g.fillRect(ox - 12, doorY, 24, 54);
+    const doorY = bodyBot - 108;
+    g.fillRect(ox - 24, doorY, 48, 108);
     // arco: ellisse piena, la metà inferiore cade nel rettangolo già pieno (stesso colore)
-    U.pixelEllipse(g, ox, doorY, 12, 12, "#241814");
+    U.pixelEllipse(g, ox, doorY, 24, 24, "#241814");
     g.fillStyle = "#3a2a22";
-    g.fillRect(ox - 12, doorY, 24, 3);
+    g.fillRect(ox - 24, doorY, 48, 6);
     g.fillStyle = "#1c1410";
-    for (let i = 0; i < 4; i++) {
-      const wy = bodyTop + 120 + i * 260;
-      if (wy > bodyBot - 90) break;
-      g.fillRect(ox - 26, wy, 10, 18);
-      g.fillRect(ox + 16, wy, 10, 18);
+    for (let i = 0; i < 6; i++) {
+      const wy = bodyTop + 240 + i * 520;
+      if (wy > bodyBot - 180) break;
+      g.fillRect(ox - 52, wy, 20, 36);
+      g.fillRect(ox + 32, wy, 20, 36);
     }
 
     // edera sparsa
     g.fillStyle = U.palette.forest;
-    for (let i = 0; i < 60; i++) {
+    for (let i = 0; i < 240; i++) {
       const h = U.hash(i * 977);
       const x = left + (h % (R * 2));
-      const y = bodyTop + 40 + ((h >>> 4) % (bodyBot - bodyTop - 80));
-      g.fillRect(x, y, 3, 3);
-      if ((h >>> 8) & 1) g.fillRect(x + 2, y + 2, 2, 2);
+      const y = bodyTop + 80 + ((h >>> 4) % (bodyBot - bodyTop - 160));
+      g.fillRect(x, y, 6, 6);
+      if ((h >>> 8) & 1) g.fillRect(x + 4, y + 4, 4, 4);
     }
 
     towerCache = c;
@@ -138,11 +138,11 @@
     buildTower();
     skyStep = -1;   // forza la ricostruzione della cache cielo
     clouds.length = 0;
-    for (let i = 0; i < 10; i++) {
+    for (let i = 0; i < 16; i++) {
       clouds.push({
         x: U.rand(0, cfg.W),
         y: U.rand(-40, cfg.GROUND_Y - 300),
-        s: U.rand(0.6, 1.4),
+        s: U.rand(1.2, 2.8),
         spd: U.rand(3, 9),
       });
     }
@@ -157,11 +157,11 @@
   let sunCache = null;
   function sunSprite() {
     if (sunCache) return sunCache;
-    const c = U.makeCanvas(96, 96);
+    const c = U.makeCanvas(128, 128);
     const g = c.getContext("2d");
     g.imageSmoothingEnabled = false;
-    U.pixelEllipse(g, 48, 48, 44, 44, "#ffe9a8", { dither: true });
-    U.pixelEllipse(g, 48, 48, 30, 30, "#ffe9a8");
+    U.pixelEllipse(g, 64, 64, 58, 58, "#ffe9a8", { dither: true });
+    U.pixelEllipse(g, 64, 64, 40, 40, "#ffe9a8");
     sunCache = c;
     return sunCache;
   }
@@ -196,8 +196,8 @@
     ctx.drawImage(skyCache, 0, 0);
     // sole in alto (sprite bakeato)
     const sunScreenY = 70 - camY * 0.12;
-    if (sunScreenY > -60 && sunScreenY < cfg.H) {
-      ctx.drawImage(sunSprite(), Math.round(cfg.W - 70 - 48), Math.round(sunScreenY - 48));
+    if (sunScreenY > -70 && sunScreenY < cfg.H) {
+      ctx.drawImage(sunSprite(), Math.round(cfg.W - 90 - 64), Math.round(sunScreenY - 64));
     }
   }
   function mix(a, b, t) { return [U.lerp(a[0], b[0], t), U.lerp(a[1], b[1], t), U.lerp(a[2], b[2], t)]; }
@@ -206,7 +206,7 @@
   function drawClouds(ctx, camY, dt) {
     for (const c of clouds) {
       c.x += c.spd * dt;
-      if (c.x > cfg.W + 60) c.x = -60;
+      if (c.x > cfg.W + 120) c.x = -120;
       const sy = c.y - camY * 0.55;   // parallasse
       if (sy < -50 || sy > cfg.H + 50) continue;
       puff(ctx, Math.round(c.x), Math.round(sy), c.s);
@@ -229,32 +229,32 @@
     ctx.fillStyle = "#3f7a34";
     ctx.fillRect(0, gy, cfg.W, cfg.H);
     ctx.fillStyle = "#2f5e28";
-    ctx.fillRect(0, gy, cfg.W, 6);
+    ctx.fillRect(0, gy, cfg.W, 12);
     // terra sotto l'erba
     ctx.fillStyle = "#4a3526";
-    ctx.fillRect(0, gy + 20, cfg.W, cfg.H);
+    ctx.fillRect(0, gy + 40, cfg.W, cfg.H);
     // ciuffi d'erba
     ctx.fillStyle = "#4f9640";
-    for (let i = 0; i < 40; i++) {
+    for (let i = 0; i < 60; i++) {
       const h = U.hash(i * 313);
       const x = h % cfg.W;
-      ctx.fillRect(x, gy - 3, 2, 4);
-      ctx.fillRect(x + 3, gy - 2, 2, 3);
+      ctx.fillRect(x, gy - 6, 4, 8);
+      ctx.fillRect(x + 6, gy - 4, 4, 6);
     }
     // zona d'impatto (terra battuta attorno alla base): pre-renderizzata,
     // il dither espanderebbe in migliaia di fillRect a ogni frame
     if (!impactCache) buildImpact();
-    ctx.drawImage(impactCache, CX - (R + 40) - 1, gy + 6 - 15);
+    ctx.drawImage(impactCache, CX - (R + 80) - 1, gy + 12 - 28);
   }
 
   // cache della zona d'impatto (bordo dithered + nucleo pieno)
   let impactCache = null;
   function buildImpact() {
-    const rx = R + 40, ry = 14;
+    const rx = R + 80, ry = 28;
     const c = U.makeCanvas(rx * 2 + 2, ry * 2 + 2);
     const g = c.getContext("2d");
     U.pixelEllipse(g, rx + 1, ry + 1, rx, ry, "#6e5540", { dither: true });
-    U.pixelEllipse(g, rx + 1, ry + 1, R + 30, 10, "#6e5540");
+    U.pixelEllipse(g, rx + 1, ry + 1, R + 60, 20, "#6e5540");
     impactCache = c;
   }
 
@@ -263,11 +263,11 @@
   T.addCorpse = function (id, x, facing) {
     const n = T.corpses.length;
     const level = Math.min(n, 40);
-    const px = x == null ? CX + U.rand(-110, 110) : U.clamp(x, CX - 116, CX + 116);
+    const px = x == null ? CX + U.rand(-180, 180) : U.clamp(x, CX - 194, CX + 194);
     T.corpses.push({
       id,
       x: px,
-      y: cfg.GROUND_Y - 3 - level * 2.0 - U.rand(0, 4),
+      y: cfg.GROUND_Y - 6 - level * 4.0 - U.rand(0, 8),
       angle: U.sign() * U.rand(1.35, 1.75),   // ~sdraiato
       facing: facing || U.sign(),
       ft: U.pick([0, 0.15]),                   // varia il frame flail nella pila

@@ -11,33 +11,33 @@
   // Griglia di design a mezza risoluzione: il corpo si disegna su GW×GH e viene
   // upscalato ×K con un singolo drawImage -> blocchi 2×2 netti (mai scale+fillRect,
   // i fill sotto transform vengono antialiasati).
-  const K = 2;                       // fattore blocco (pixel "chunky")
+  const K = 4;                       // fattore blocco (pixel "chunky")
   const GW = 36, GH = 56;            // griglia di design
-  const SW = GW * K, SH = GH * K;    // sprite finale 72×112
+  const SW = GW * K, SH = GH * K;    // sprite finale 144×224
   // Teste più grandi/riconoscibili (bobblehead SF2). FACE = area volto, HEAD = canvas
   // con cornice+outline, PX = risoluzione della foto quantizzata (posterize senza readback).
-  const FACE = 72, HEAD = 80, PX = 36; // FACE = 2·PX esatto -> pixel foto 2×2 uniformi
+  const FACE = 144, HEAD = 160, PX = 36; // FACE = 4·PX esatto -> pixel foto 4×4 uniformi
   const OUTLINE = "#0c0812";         // outline scuro condiviso (ruolo ink)
   const CX = GW / 2;                 // 18 (griglia di design)
-  const HEAD_CY = 32;                // centro testa nello sprite (y dall'alto, coord FINALI)
+  const HEAD_CY = 64;                // centro testa nello sprite (y dall'alto, coord FINALI)
   const NECK_Y = 27;                 // da qui in giù: coordinate di design (metà delle finali)
   const SHOULDER_Y = 32;
   const HIP_Y = 43;
   const FOOT_Y = 54;
   const SHOULDER_YF = SHOULDER_Y * K; // spalle in coord FINALI (per drawDangle)
-  S.SW = SW; S.SH = SH; S.HEAD = HEAD;
+  S.SW = SW; S.SH = SH; S.HEAD = HEAD; S.K = K;
 
   const SKINS = ["#f2cda3", "#e8bb8d", "#d6a878", "#b98a5e", "#8d5a3a"];
 
   // ---- tile di dither ordinato 4x4 (Bayer) su canvas PROPRIO (non-tainted) ----
   // Compositato in multiply a bassa alpha sulla testa per texture retro; niente
   // dither su outline/feature piccole (si applica solo all'area volto).
-  // Celle 2×2 (tile 8×8) per non spezzare la griglia 2px della foto.
+  // Celle 4×4 (tile 16×16) per non spezzare la griglia 4px della foto.
   let ditherTile = null;
   function getDitherTile() {
     if (ditherTile) return ditherTile;
     const B = [0, 8, 2, 10, 12, 4, 14, 6, 3, 11, 1, 9, 15, 7, 13, 5]; // Bayer 4x4
-    const t = U.makeCanvas(8, 8);
+    const t = U.makeCanvas(16, 16);
     const g = t.getContext("2d");
     for (let i = 0; i < 16; i++) {
       const x = i % 4, y = (i / 4) | 0;
@@ -45,7 +45,7 @@
       const v = B[i] / 15;
       const a = (1 - v) * 0.5;         // 0..0.5
       g.fillStyle = "rgba(20,12,28," + a.toFixed(3) + ")";
-      g.fillRect(x * 2, y * 2, 2, 2);
+      g.fillRect(x * 4, y * 4, 4, 4);
     }
     ditherTile = t;
     return t;
@@ -325,18 +325,18 @@
     const head = U.makeCanvas(HEAD, HEAD);
     const hg = head.getContext("2d");
     hg.imageSmoothingEnabled = false;
-    const m = (HEAD - FACE) / 2;                 // margine cornice (4)
-    hg.fillStyle = OUTLINE; hg.fillRect(m - 2, m - 2, FACE + 4, FACE + 4);  // outline 2px
+    const m = (HEAD - FACE) / 2;                 // margine cornice (8)
+    hg.fillStyle = OUTLINE; hg.fillRect(m - 4, m - 4, FACE + 8, FACE + 8);  // outline 4px
     hg.drawImage(face, m, m);
-    // rim light top/right (luce dall'alto-destra), 2px in screen (griglia foto 2px)
+    // rim light top/right (luce dall'alto-destra), 4px in screen (griglia foto 4px)
     hg.globalCompositeOperation = "screen";
     hg.fillStyle = "rgba(255,246,214,0.55)";
-    hg.fillRect(m, m, FACE, 2);
-    hg.fillRect(m + FACE - 2, m, 2, FACE);
+    hg.fillRect(m, m, FACE, 4);
+    hg.fillRect(m + FACE - 4, m, 4, FACE);
     hg.globalCompositeOperation = "source-over";
     // ombra interna bottom/left
-    hg.fillStyle = "rgba(0,0,0,0.32)"; hg.fillRect(m, m + FACE - 2, FACE, 2);
-    hg.fillStyle = "rgba(0,0,0,0.18)"; hg.fillRect(m, m, 2, FACE);
+    hg.fillStyle = "rgba(0,0,0,0.32)"; hg.fillRect(m, m + FACE - 4, FACE, 4);
+    hg.fillStyle = "rgba(0,0,0,0.18)"; hg.fillRect(m, m, 4, FACE);
     return head;
   }
 
@@ -387,7 +387,7 @@
     const g = head.getContext("2d");
     const h = U.hash(char.id);
     const m = (HEAD - FACE) / 2;
-    g.fillStyle = OUTLINE; g.fillRect(m - 2, m - 2, FACE + 4, FACE + 4);
+    g.fillStyle = OUTLINE; g.fillRect(m - 4, m - 4, FACE + 8, FACE + 8);
     g.fillStyle = "hsl(" + (h % 360) + ",40%,55%)"; g.fillRect(m, m, FACE, FACE);
     g.fillStyle = "#fff"; g.font = Math.round(FACE * 0.4) + 'px ' + Game.cfg.FONT;
     g.textAlign = "center"; g.textBaseline = "middle";
@@ -460,7 +460,7 @@
   // ombra di contatto sotto i piedi (rx/squash variabili per il teeter):
   // ellisse a gradoni di blocchi 2px, righe non sovrapposte -> alpha uniforme
   function contactShadow(ctx, x, y, rx, alpha) {
-    const B = 2, ry = Math.max(B, rx * 0.34);
+    const B = K, ry = Math.max(B, rx * 0.34);
     const rows = Math.max(1, Math.round(ry / B));
     const cx = Math.round(x), cy = Math.round(y) - 1;
     ctx.fillStyle = "rgba(0,0,0," + (alpha == null ? 0.30 : alpha) + ")";
@@ -607,7 +607,7 @@
   S.drawBig = function (ctx, id, cx, cy, scale, frameName) {
     const e = S.store[id]; if (!e) return;
     const frame = e.frames[frameName] || e.frames.idleA;
-    contactShadow(ctx, cx, cy, 23 * scale, 0.28);
+    contactShadow(ctx, cx, cy, 46 * scale, 0.28);
     ctx.save();
     ctx.imageSmoothingEnabled = false;
     ctx.translate(cx, cy);
@@ -622,7 +622,7 @@
     const cfg = Game.cfg;
     ctx.fillStyle = "#15101f";
     ctx.fillRect(0, 0, cfg.W, cfg.H);
-    const cols = 4, cw = cfg.W / cols, ch = 176;
+    const cols = 4, cw = cfg.W / cols, ch = 288;
     ctx.textAlign = "center"; ctx.textBaseline = "top";
     characters.forEach((char, i) => {
       const col = i % cols, row = Math.floor(i / cols);
@@ -630,9 +630,9 @@
       const y = row * ch + 12 - (scroll || 0);
       if (y < -ch || y > cfg.H) return;
       ctx.fillStyle = "#ffd23f";
-      ctx.font = '5px ' + cfg.FONT;
+      ctx.font = '7px ' + cfg.FONT;
       ctx.fillText(char.name.slice(0, 14), x, y + 2);
-      S.drawBig(ctx, char.id, x, y + 164, 1.0, "idleA");
+      S.drawBig(ctx, char.id, x, y + 268, 1.0, "idleA");
     });
   };
 })();

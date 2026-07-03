@@ -15,15 +15,15 @@
 
   // ------- Configurazione mondo/gioco -------
   Game.cfg = {
-    W: 480,               // risoluzione interna canvas
+    W: 640,               // risoluzione interna canvas
     H: 600,
-    GROUND_Y: 2000,       // y del suolo nel mondo
-    TOWER_CX: 240,        // centro torre
-    TOWER_R: 100,         // raggio torre (mezza larghezza)
-    TOP_Y: 392,           // y dei piedi dei personaggi sulla piattaforma
-    FIGHTER_DX: 60,       // offset orizzontale dei due sfidanti dal centro
+    GROUND_Y: 3660,       // y del suolo nel mondo
+    TOWER_CX: 320,        // centro torre
+    TOWER_R: 170,         // raggio torre (mezza larghezza)
+    TOP_Y: 456,           // y dei piedi dei personaggi sulla piattaforma
+    FIGHTER_DX: 94,       // offset orizzontale dei due sfidanti dal centro
     DUEL_CAM_Y: 40,       // y (alto viewport) durante il duello
-    GRAVITY: 1250,        // px/s^2
+    GRAVITY: 2500,        // px/s^2
     FONT: '"Press Start 2P", monospace',
     MATCH_CHALLENGERS: 15, // sfidanti estratti a caso per partita (oltre a Murgia)
     TOTAL_ROUNDS: 15,     // default, sovrascritto in SM.reset da st.pool.length

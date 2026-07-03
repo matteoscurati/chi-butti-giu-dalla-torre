@@ -148,7 +148,9 @@
     const wc = el.winnerCanvas.getContext("2d");
     wc.imageSmoothingEnabled = false;
     wc.clearRect(0, 0, el.winnerCanvas.width, el.winnerCanvas.height);
-    Game.sprites.drawBig(wc, winner.id, el.winnerCanvas.width / 2, el.winnerCanvas.height - 8, 1.5, "cheer");
+    // scala 1.0: gli sprite ora sono 144×224+testa con blocchi nativi da 4px,
+    // così i blocchi restano interi (pixel-perfect) nel canvas 176×272.
+    Game.sprites.drawBig(wc, winner.id, el.winnerCanvas.width / 2, el.winnerCanvas.height - 16, 1.0, "cheer");
     // classifica finale
     el.finalRanking.innerHTML = "";
     ordered.forEach((c, i) => {
