@@ -1,4 +1,4 @@
-// fx.js — particelle di polvere, testo fluttuante (urlo/onomatopea), coriandoli.
+// fx.js — particelle di polvere, testi fluttuanti (urlo/K.O.), shockwave, coriandoli.
 (function () {
   "use strict";
   const Game = window.Game;
@@ -19,34 +19,17 @@
   };
 
   const SCREAMS = ["AAAAH!", "NOOOO!", "MAMMAAA!", "VOLOOO!", "PERCHÉ?!", "ADDIOOO!", "AIUTOOO!"];
-  const BOOMS = ["SBAM!", "CRASH!", "PATAPUM!", "TONF!", "BLAM!", "SPLASH!"];
   FX.randomScream = () => U.pick(SCREAMS);
 
   // ---- polvere ----
-  FX.spawnDust = function (x, y, n, color) {
-    n = n || 18;
-    for (let i = 0; i < n; i++) {
-      const a = U.rand(-Math.PI, 0);
-      const sp = U.rand(40, 200);
-      particles.push({
-        x, y,
-        vx: Math.cos(a) * sp + U.rand(-30, 30),
-        vy: Math.sin(a) * sp - U.rand(10, 60),
-        life: U.rand(0.4, 0.9), max: 0.9,
-        size: U.randInt(2, 5),
-        color: color || (Math.random() < 0.5 ? "#caa878" : "#9a8060"),
-      });
-    }
-  };
-
   FX.spawnPoof = function (x, y) {
     for (let i = 0; i < 14; i++) {
       const a = U.rand(0, Math.PI * 2);
-      const sp = U.rand(20, 90);
+      const sp = U.rand(40, 180);
       particles.push({
         x, y,
-        vx: Math.cos(a) * sp, vy: Math.sin(a) * sp - 20,
-        life: U.rand(0.3, 0.6), max: 0.6, size: U.randInt(2, 4),
+        vx: Math.cos(a) * sp, vy: Math.sin(a) * sp - 40,
+        life: U.rand(0.3, 0.6), max: 0.6, size: U.randInt(4, 8),
         color: "#e8e0f0",
       });
     }
@@ -57,12 +40,12 @@
     n = n || 30;
     for (let i = 0; i < n; i++) {
       const a = U.rand(-Math.PI, 0.2);              // prevalentemente verso l'alto/lati
-      const sp = U.rand(60, 320);
+      const sp = U.rand(120, 640);
       particles.push({
         x, y,
         vx: Math.cos(a) * sp, vy: Math.sin(a) * sp - U.rand(0, 40),
         life: U.rand(0.4, 1.0), max: 1.0,
-        size: U.randInt(2, 6),
+        size: U.randInt(4, 12),
         color: Math.random() < 0.5 ? "#caa878" : (Math.random() < 0.5 ? "#9a8060" : "#6e5540"),
       });
     }
@@ -73,12 +56,12 @@
     n = n || 4;
     for (let i = 0; i < n; i++) {
       debris.push({
-        x: x + U.rand(-22, 22), y: y - U.rand(0, 3),
-        size: U.randInt(2, 4),
+        x: x + U.rand(-44, 44), y: y - U.rand(0, 6),
+        size: U.randInt(4, 8),
         color: Math.random() < 0.5 ? "#7d5a48" : "#6e5540",
       });
     }
-    if (debris.length > 90) debris.splice(0, debris.length - 90);
+    if (debris.length > 120) debris.splice(0, debris.length - 120);
   };
 
   // shockwave ring che si espande e sfuma dal punto d'impatto (mondo)
@@ -108,7 +91,7 @@
   // pop-text "K.O." arcade sul punto d'impatto
   FX.ko = function (x, y) {
     FX.addText("K.O.", x, y, {
-      color: "#dad45e", size: 30, life: 1.1, vy: -14, outline: "#d04648", pop: true,
+      color: "#dad45e", size: 48, life: 1.1, vy: -28, outline: "#d04648", pop: true,
     });
   };
 
@@ -118,7 +101,7 @@
     opts = opts || {};
     texts.push({
       text, x, y,
-      vy: opts.vy == null ? -30 : opts.vy,
+      vy: opts.vy == null ? -60 : opts.vy,
       t: 0, life: opts.life || 1.2,
       size: opts.size || 10,
       color: opts.color || "#fff",
@@ -133,9 +116,9 @@
   // frase biografica urlata in caduta (fallback: urlo generico)
   FX.scream = function (track, text) {
     const t = text || FX.randomScream();
-    const size = t.length > 24 ? 8 : (t.length > 16 ? 9 : 10);
-    FX.addText(t, track.x, track.y - 40, {
-      color: "#fff", size, life: 1.6, track, dy: -50, wobble: 5, outline: "#c0293f",
+    const size = t.length > 24 ? 13 : (t.length > 16 ? 15 : 18);
+    FX.addText(t, track.x, track.y - 80, {
+      color: "#fff", size, life: 1.6, track, dy: -100, wobble: 5, outline: "#c0293f",
     });
   };
 
@@ -145,27 +128,21 @@
     for (let i = 0; i < n; i++) {
       particles.push({
         x, y,
-        vx: U.sign() * U.rand(18, 52), vy: U.rand(-70, -32),
+        vx: U.sign() * U.rand(36, 104), vy: U.rand(-140, -64),
         life: U.rand(0.4, 0.7), max: 0.7,
-        size: 2, color: "#9fe8ff",
+        size: 4, color: "#9fe8ff",
       });
     }
-  };
-
-  FX.boom = function (x, y) {
-    FX.addText(U.pick(BOOMS), x, y - 20, {
-      color: "#ffd23f", size: 22, life: 1.0, vy: -18, outline: "#c0293f", pop: true,
-    });
   };
 
   // ---- coriandoli (schermo) ----
   FX.confettiBurst = function () {
     const cols = ["#ffd23f", "#ff2e4c", "#2b8cff", "#5cff9d", "#ff9f1c", "#ff6bd6"];
-    for (let i = 0; i < 120; i++) {
+    for (let i = 0; i < 160; i++) {
       confetti.push({
         x: U.rand(0, cfg.W), y: U.rand(-cfg.H, 0),
-        vx: U.rand(-30, 30), vy: U.rand(60, 180),
-        size: U.randInt(3, 7), rot: U.rand(0, 6.28), vr: U.rand(-6, 6),
+        vx: U.rand(-30, 30), vy: U.rand(80, 220),
+        size: U.randInt(4, 10), rot: U.rand(0, 6.28), vr: U.rand(-6, 6),
         color: U.pick(cols),
       });
     }
@@ -175,7 +152,7 @@
   FX.update = function (dt) {
     for (let i = particles.length - 1; i >= 0; i--) {
       const p = particles[i];
-      p.vy += 400 * dt;
+      p.vy += 800 * dt;
       p.x += p.vx * dt; p.y += p.vy * dt;
       p.life -= dt;
       if (p.life <= 0) particles.splice(i, 1);
@@ -223,19 +200,25 @@
       const th = phase === 0 ? s.width : Math.max(2, s.width - 1);
       U.pixelEllipse(ctx, s.x, s.y, r, ry, s.ramp[phase], { thickness: th, dither: phase === 2 });
     }
+    // testi: pop a 2 step di font e blink finale a 12Hz (mai scale/alpha continui),
+    // clampati dentro lo schermo (M copre margine + shake/kick camera in x)
     for (const s of texts) {
       const k = s.t / s.life;
-      let scale = 1;
-      if (s.pop) scale = k < 0.2 ? U.lerp(0.2, 1.15, k / 0.2) : U.lerp(1.15, 1, U.clamp((k - 0.2) / 0.3, 0, 1));
+      if (k > 0.75 && Math.floor(s.t * 12) % 2 === 1) continue;   // fade -> blink
+      const size = (s.pop && k < 0.15) ? s.size + 8 : s.size;
       ctx.save();
-      ctx.globalAlpha = k > 0.75 ? U.lerp(1, 0, (k - 0.75) / 0.25) : 1;
-      const wob = Math.sin(s.t * 18) * s.wobble;
-      ctx.translate(Math.round(s.x + wob), Math.round(s.y));
-      ctx.scale(scale, scale);
-      ctx.font = s.size + "px " + cfg.FONT;
+      ctx.font = size + "px " + cfg.FONT;
+      if (s._w == null || s._wSize !== size) { s._w = ctx.measureText(s.text).width; s._wSize = size; }
+      const half = Math.ceil(s._w / 2) + Math.ceil(size * 0.35 / 2);
+      const M = 21;
+      const wob = Math.round(Math.sin(s.t * 18) * s.wobble);
+      const tx = U.clamp(Math.round(s.x) + wob, half + M, cfg.W - half - M);
+      const camY = Math.round(Game.camera.y);
+      const ty = U.clamp(Math.round(s.y), camY + size + 4, camY + cfg.H - size - 4);
+      ctx.translate(tx, ty);
       ctx.textAlign = "center"; ctx.textBaseline = "middle";
       ctx.lineJoin = "round";
-      ctx.lineWidth = Math.max(3, s.size * 0.35);
+      ctx.lineWidth = Math.max(3, size * 0.35);
       ctx.strokeStyle = s.outline;
       ctx.strokeText(s.text, 0, 0);
       ctx.fillStyle = s.color;
@@ -248,12 +231,11 @@
   // ---- draw schermo (coriandoli + flash) ----
   FX.drawScreen = function (ctx) {
     for (const c of confetti) {
-      ctx.save();
-      ctx.translate(c.x, c.y);
-      ctx.rotate(c.rot);
+      // flip a 4 fasi pilotato da rot: altezza che varia a scatti, niente ctx.rotate
+      const f = ((Math.floor(c.rot * 3) % 4) + 4) % 4;
+      const hh = [c.size, Math.max(1, c.size >> 1), 1, Math.max(1, c.size >> 1)][f];
       ctx.fillStyle = c.color;
-      ctx.fillRect(-c.size / 2, -c.size / 2, c.size, c.size);
-      ctx.restore();
+      ctx.fillRect(Math.round(c.x - c.size / 2), Math.round(c.y - hh / 2), c.size, hh);
     }
     if (flashA > 0.003) {
       ctx.save();

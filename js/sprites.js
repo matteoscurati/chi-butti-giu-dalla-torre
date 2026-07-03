@@ -1,5 +1,7 @@
 // sprites.js — volto foto (testone) + corpo pixel art con abito coerente,
-// animazioni (idle/flail/cheer), testa indipendente con bob/tilt, tremolio.
+// animazioni (idle/flail/cheer) a frame baked, testa indipendente con bob a step.
+// Movimento 2D puro: niente rotate/scale continui, solo translate intere,
+// flip ±1 e matrici esatte a 90°; tutti i driver sono quantizzati al blocco K.
 // NB: le immagini locali "sporcano" il canvas: solo drawImage/compositing,
 // mai getImageData/toDataURL -> ok anche da file://.
 (function () {
@@ -24,7 +26,6 @@
   const SHOULDER_Y = 32;
   const HIP_Y = 43;
   const FOOT_Y = 54;
-  const SHOULDER_YF = SHOULDER_Y * K; // spalle in coord FINALI (per drawDangle)
   S.SW = SW; S.SH = SH; S.HEAD = HEAD; S.K = K;
 
   const SKINS = ["#f2cda3", "#e8bb8d", "#d6a878", "#b98a5e", "#8d5a3a"];
@@ -62,8 +63,6 @@
   const SHORT_SLEEVE = { dress: 1, gown: 1, football: 1, tennis: 1, running: 1, swim: 1, cycling: 1 };
   const SHORTS = { cycling: "#17171c", football: "#eef0f6", keeper: "#17171c", tennis: "#eef0f6", running: "#20242c" };
   const SPORT_SHOE = { cycling: 1, football: 1, keeper: 1, tennis: 1, running: 1, swim: 1 };
-  // secondary motion: outfit con un elemento penzolante (cravatta/sciarpa/sash)
-  const DANGLE = { suit: "tie", tux: "tie", blackshirt: "tie", pantsuit: "tie", coat: "scarf", gown: "sash" };
 
   const POSE = {
     idleA: { arm: "down", legSpread: 0, lift: 0 },
@@ -448,17 +447,16 @@
     if (total === 0 && onDone) onDone();
   };
 
-  function drawHeadOn(ctx, head, x, y, tilt) {
+  function drawHeadOn(ctx, head, x, y) {
     ctx.save();
     ctx.translate(x, y);
-    if (tilt) ctx.rotate(tilt);
     ctx.imageSmoothingEnabled = false;
     ctx.drawImage(head, -HEAD / 2, -HEAD / 2);
     ctx.restore();
   }
 
-  // ombra di contatto sotto i piedi (rx/squash variabili per il teeter):
-  // ellisse a gradoni di blocchi 2px, righe non sovrapposte -> alpha uniforme
+  // ombra di contatto sotto i piedi (rx variabile col frame di respiro):
+  // ellisse a gradoni di blocchi, righe non sovrapposte -> alpha uniforme
   function contactShadow(ctx, x, y, rx, alpha) {
     const B = K, ry = Math.max(B, rx * 0.34);
     const rows = Math.max(1, Math.round(ry / B));
@@ -472,47 +470,24 @@
     }
   }
 
-  // secondary motion: elemento penzolante (cravatta/sciarpa/sash) con follow-through.
-  // Chiamata DENTRO il transform del corpo (x=0 = CX). L'angolo insegue la velocità del teeter.
-  function drawDangle(ctx, v, teeterVel, breath) {
-    const kind = DANGLE[v.o.t];
-    if (!kind) return;
-    let ay, len, wdt;
-    if (kind === "tie") { ay = -SH + SHOULDER_YF + 8; len = 8; wdt = 4; }
-    else if (kind === "scarf") { ay = -SH + SHOULDER_YF + 2; len = 10; wdt = 5; }
-    else { ay = -SH + SHOULDER_YF + 12; len = 12; wdt = 5; } // sash
-    const ang = U.clamp(-teeterVel * 0.5, -0.5, 0.5) + breath * 0.04;
-    const x1 = Math.sin(ang) * len, y1 = ay + Math.cos(ang) * len;
-    const ang2 = ang * 1.7;
-    const x2 = x1 + Math.sin(ang2) * len, y2 = y1 + Math.cos(ang2) * len;
-    ctx.strokeStyle = v.o.a; ctx.lineWidth = wdt; ctx.lineJoin = "round"; ctx.lineCap = "round";
-    ctx.beginPath(); ctx.moveTo(0, ay); ctx.lineTo(x1, y1); ctx.lineTo(x2, y2); ctx.stroke();
-  }
-
-  // wind-streaks in caduta (aria che sfreccia), disegnate in coord mondo attorno all'anchor
-  function drawWindStreaks(ctx, x, y, vx, vy, t) {
+  // speed-lines verticali in caduta (aria che sfreccia), in coord mondo attorno
+  // all'anchor: fillRect a colore pieno, jitter quantizzato a 12Hz (mai per-frame)
+  function drawSpeedLines(ctx, x, y, vx, vy, t) {
     const spd = Math.hypot(vx, vy);
-    if (spd < 260) return;
-    const dir = Math.atan2(vy, vx);
-    const n = 5, len = Math.min(spd * 0.045, 28);
-    ctx.save();
-    ctx.translate(Math.round(x), Math.round(y));
-    ctx.rotate(dir);
-    ctx.strokeStyle = "rgba(255,255,255,0.26)";
-    ctx.lineWidth = 1;
-    ctx.beginPath();
+    if (spd <= 520 || Math.abs(vy) <= Math.abs(vx)) return;
+    const len = Math.round(U.clamp(spd * 0.045, 16, 56) / K) * K;
+    const bx = Math.round(x / K) * K, by = Math.round(y / K) * K;
+    const n = 5;
+    ctx.fillStyle = U.palette.silver;
     for (let i = 0; i < n; i++) {
-      const yy = (i - (n - 1) / 2) * (SH / n);
-      const j = (U.hash(i * 97 + Math.floor(t * 45)) % 100) / 100;
-      const bx = -SW * 0.5 - 2 - j * 6;
-      const l = len * (0.6 + j * 0.6);
-      ctx.moveTo(bx, yy); ctx.lineTo(bx - l, yy);
+      const j = U.hash(i * 97 + Math.floor(t * 12) + "") % 4;   // U.hash vuole una stringa
+      const sx = bx - SW / 2 + Math.round((i + 0.5) * SW / n / K) * K;
+      const sy = by - SH / 2 - 2 * K - j * K - len;             // dietro al moto (sopra il corpo)
+      ctx.fillRect(sx, sy, K / 2, len);
     }
-    ctx.stroke();
-    ctx.restore();
   }
 
-  // ---- disegno idle (ancora ai piedi) con respiro, teeter, weight-shift, follow-through ----
+  // ---- disegno idle (ancora ai piedi): frame baked + driver a step discreti ----
   S.drawIdle = function (ctx, id, x, y, facing, t, opts) {
     const e = S.store[id]; if (!e) return;
     opts = opts || {};
@@ -520,100 +495,92 @@
     const seed = U.hash(id) % 997;
     const scared = !!opts.tremble;
 
-    // drivers procedurali (deterministici, niente stato per-entità)
-    const breath = Math.sin(t * 2.0 + ph);
-    const tw = 0.5;
-    const teeter = U.noise1D(seed, t * tw) * (scared ? 0.02 : 0.05);         // sway lento sul cornicione
-    const teeterVel = (teeter - U.noise1D(seed, (t - 0.05) * tw) * (scared ? 0.02 : 0.05)) / 0.05;
-    const weightX = U.noise1D(seed + 7, t * tw * 0.75) * 2.0;                // spostamento del peso
-    const tremX = scared ? U.rand(-1.4, 1.4) : 0;
-    const tremY = scared ? U.rand(-0.65, 0.65) : 0;
+    // driver deterministici quantizzati al blocco K (mai rotazioni/scale/alpha continui)
+    const isB = Math.floor(t * 1.4 + ph) % 2 === 1;                 // respiro: alterna i frame baked
+    const frame = isB ? e.frames.idleB : e.frames.idleA;
+    const weightX = Math.round(U.noise1D(seed + 7, t * 0.4)) * K;   // spostamento del peso ∈ {−K,0,+K}
+    let tremX = 0;
+    if (scared) {                                                    // tremolio a 12Hz, quantizzato
+      const step = Math.floor(t * 12);
+      tremX = ((U.hash(id + "|" + step) % 3) - 1) * K;
+    }
+    const headBob = Math.round(Math.sin(t * 2.4 + ph)) * K;          // ∈ {−K,0,+K}
+    const headLift = isB ? K : 0;                                    // la testa segue il lift di idleB
 
-    // squash & stretch (volume ~costante, ancorato ai piedi)
-    const sxs = 1 - breath * 0.02;
-    const sys = 1 + breath * 0.024;
+    const px = Math.round(x + weightX + tremX), py = Math.round(y);
+    contactShadow(ctx, px, y, Math.round(SW * 0.30) - (isB ? K : 0), 0.30);
 
-    const headBob = Math.sin(t * 2.4 + ph) * 1.7 + (scared ? U.rand(-0.7, 0.7) : 0);
-    const tilt = teeter * 0.7 + Math.sin(t * 1.1 + ph) * 0.025;
-
-    // ombra: si schiaccia col teeter e respira col corpo
-    const shR = 22 + breath * 0.8 - Math.abs(teeter) * 31;
-    contactShadow(ctx, x + weightX, y, Math.max(13, shR), 0.30);
-
-    const px = Math.round(x + weightX + tremX), py = Math.round(y + tremY);
     ctx.save();
     ctx.translate(px, py);
-    ctx.rotate(teeter);                                   // teeter attorno ai piedi
-    ctx.scale((facing < 0 ? -1 : 1) * sxs, sys);
-    if (opts.glow) { ctx.shadowColor = opts.glow; ctx.shadowBlur = 14; }
+    if (facing < 0) ctx.scale(-1, 1);
     ctx.imageSmoothingEnabled = false;
-    ctx.drawImage(e.frames.idleA, -SW / 2, -SH);
-    ctx.shadowBlur = 0;
-    drawDangle(ctx, e.v, teeterVel, breath);              // secondary motion
-    drawHeadOn(ctx, e.head, 0, -(SH - HEAD_CY) + headBob, tilt);
+    ctx.drawImage(frame, -SW / 2, -SH);
+    drawHeadOn(ctx, e.head, 0, -(SH - HEAD_CY) - headLift + headBob);
     ctx.restore();
 
-    if (opts.danger || opts.outline) {
-      ctx.save();
-      ctx.translate(px, py);
-      ctx.rotate(teeter);
-      if (opts.danger) {
-        // reticolo di mira rosso pulsante (corner brackets)
-        const pulse = 0.5 + 0.5 * Math.sin(t * 8);
-        const g = 5 + pulse * 4;
-        const bx = -SW / 2 - g, by = -SH - g, bw = SW + g * 2, bh = SH + g * 2, L = 14;
-        ctx.globalAlpha = 0.55 + 0.45 * pulse;
-        ctx.strokeStyle = "#d04648"; ctx.lineWidth = 2; ctx.lineJoin = "miter";
-        ctx.beginPath();
-        ctx.moveTo(bx, by + L); ctx.lineTo(bx, by); ctx.lineTo(bx + L, by);
-        ctx.moveTo(bx + bw - L, by); ctx.lineTo(bx + bw, by); ctx.lineTo(bx + bw, by + L);
-        ctx.moveTo(bx, by + bh - L); ctx.lineTo(bx, by + bh); ctx.lineTo(bx + L, by + bh);
-        ctx.moveTo(bx + bw - L, by + bh); ctx.lineTo(bx + bw, by + bh); ctx.lineTo(bx + bw, by + bh - L);
-        ctx.stroke();
-      } else {
-        ctx.strokeStyle = opts.outline; ctx.lineWidth = 2;
-        ctx.strokeRect(-SW / 2 - 2, -SH - 2, SW + 4, SH + 4);
-      }
-      ctx.restore();
-    }
+    if (opts.danger) drawHoverMark(ctx, px, py, t);
   };
 
+  // hover sul bersaglio: cornice rossa on/off secco + freccia oro puntata in giù.
+  // Tutto fillRect a coordinate intere, alpha sempre 1, nessuna rotazione.
+  function drawHoverMark(ctx, px, py, t) {
+    ctx.save();
+    ctx.translate(px, py);
+    if (Math.floor(t * 12) % 2 === 0) {
+      // cornice spessa K con gap 2K attorno allo sprite
+      const bx = -SW / 2 - 2 * K, by = -SH - 2 * K, bw = SW + 4 * K, bh = SH + 3 * K;
+      ctx.fillStyle = U.palette.red;
+      ctx.fillRect(bx, by, bw, K);
+      ctx.fillRect(bx, by + bh - K, bw, K);
+      ctx.fillRect(bx, by, K, bh);
+      ctx.fillRect(bx + bw - K, by, K, bh);
+    }
+    // freccia stabile (non lampeggia): punta 1/3/5 blocchi + gambo 3×2, bob a 2 frame
+    const bob = (Math.floor(t * 4) % 2) * K;
+    const tipY = -(SH - HEAD_CY) - HEAD / 2 - 2 * K - bob;
+    ctx.fillStyle = U.palette.gold;
+    for (let r = 0; r < 3; r++) ctx.fillRect(-(2 * r + 1) * K / 2, tipY - (r + 1) * K, (2 * r + 1) * K, K);
+    ctx.fillRect(-3 * K / 2, tipY - 5 * K, 3 * K, 2 * K);
+    ctx.restore();
+  }
+
   // ---- disegno ruotato (caduta/cadavere); anchor = centro sprite ----
-  // opts.vx/vy presenti = caduta drammatica (stretch lungo velocità + wind-streaks + flail veloce)
+  // Orientamento quantizzato a 90° con matrici esatte (mai ctx.rotate).
+  // opts.vx/vy presenti = caduta: il flail segue il quarto di giro + speed-lines.
   S.drawRotated = function (ctx, id, x, y, facing, angle, alpha, t, opts) {
     const e = S.store[id]; if (!e) return;
     opts = opts || {};
     const fast = opts.vx != null;
-    const frame = (Math.floor((t || 0) * (fast ? 18 : 10)) % 2) ? e.frames.flailB : e.frames.flailA;
-    if (fast) drawWindStreaks(ctx, x, y, opts.vx, opts.vy, t);
+    const qi = ((Math.floor(angle / (Math.PI / 2)) % 4) + 4) % 4;
+    const frame = fast
+      ? (qi % 2 ? e.frames.flailB : e.frames.flailA)      // 8 pose distinte nel tumbling
+      : ((Math.floor((t || 0) * 10) % 2) ? e.frames.flailB : e.frames.flailA);
+    if (fast) drawSpeedLines(ctx, x, y, opts.vx, opts.vy, t);
     ctx.save();
     ctx.globalAlpha = alpha == null ? 1 : alpha;
     ctx.translate(Math.round(x), Math.round(y));
-    if (fast) {
-      const spd = Math.hypot(opts.vx, opts.vy);
-      const st = 1 + Math.min(spd / 1100, 0.42);          // stretch lungo la velocità
-      const vdir = Math.atan2(opts.vy, opts.vx);
-      ctx.rotate(vdir); ctx.scale(st, 1 / st); ctx.rotate(-vdir);
-    }
-    ctx.rotate(angle);
+    if (qi === 1) ctx.transform(0, 1, -1, 0, 0, 0);
+    else if (qi === 2) ctx.transform(-1, 0, 0, -1, 0, 0);
+    else if (qi === 3) ctx.transform(0, -1, 1, 0, 0, 0);
     ctx.scale(facing < 0 ? -1 : 1, 1);
     ctx.imageSmoothingEnabled = false;
     ctx.drawImage(frame, -SW / 2, -SH / 2);
-    drawHeadOn(ctx, e.head, 0, HEAD_CY - SH / 2, 0);
+    drawHeadOn(ctx, e.head, 0, HEAD_CY - SH / 2);
     ctx.restore();
   };
 
   // ---- sprite grande (vincitore) ----
+  // NB: scale deve essere INTERO (i fill sotto scale frazionario si antialiasano)
   S.drawBig = function (ctx, id, cx, cy, scale, frameName) {
     const e = S.store[id]; if (!e) return;
     const frame = e.frames[frameName] || e.frames.idleA;
     contactShadow(ctx, cx, cy, 46 * scale, 0.28);
     ctx.save();
     ctx.imageSmoothingEnabled = false;
-    ctx.translate(cx, cy);
+    ctx.translate(Math.round(cx), Math.round(cy));
     ctx.scale(scale, scale);
     ctx.drawImage(frame, -SW / 2, -SH);
-    drawHeadOn(ctx, e.head, 0, -(SH - HEAD_CY), 0);
+    drawHeadOn(ctx, e.head, 0, -(SH - HEAD_CY));
     ctx.restore();
   };
 

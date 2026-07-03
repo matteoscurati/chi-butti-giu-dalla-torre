@@ -81,15 +81,18 @@ tools/fetch_faces.mjs script di download volti / generazione dataset
   numero di maglia) coerente con il personaggio e adeguato al genere. Non si legge
   mai la memoria del canvas (`getImageData`/`toDataURL`), quindi il "taint" da
   `file://` non è un problema.
-- **Animazioni**: la testa ha un moto indipendente (oscillazione + inclinazione)
-  rispetto al corpo; respiro da fermo, tremolio e sudore quando il personaggio è
-  puntato, braccia/gambe spalancate in caduta, posa d'esultanza per il vincitore.
-  Ogni personaggio è pre-renderizzato (baking) in testa + 5 frame di corpo.
-- **Caduta con fisica reale**: gravità, spinta iniziale verso l'esterno,
-  rotazione del corpo, camera che segue, impatto con polvere, screenshake e
-  onomatopea; i corpi si accumulano alla base.
-- Risoluzione interna 480×600 scalata con `image-rendering: pixelated`
-  (nessun antialiasing). Rendering leggero (torre e sprite in cache): ~60fps.
+- **Animazioni "assolutamente 2D"**: niente rotazioni libere né scale frazionarie —
+  tutto avviene a scatti sulla griglia dei blocchi (4px). Respiro come alternanza
+  di due pose pre-renderizzate, tremolio quantizzato e sudore sul personaggio
+  puntato (con cornice rossa lampeggiante + freccia), posa d'esultanza per il
+  vincitore. Ogni personaggio è pre-renderizzato (baking) in testa + 5 frame.
+- **Caduta con fisica reale ma tumbling arcade**: gravità e spinta verso
+  l'esterno, corpo che ruota SOLO a scatti di 90° (pixel-perfect) alternando le
+  pose, camera che segue, impatto con polvere, screenshake (solo traslazioni) e
+  K.O.; i corpi si accumulano alla base sdraiati esatti.
+- Risoluzione interna 640×600 scalata a passi di 0.25 con `image-rendering:
+  pixelated` (nessun antialiasing). Rendering leggero (torre, cielo e sprite in
+  cache): ~60fps. Personaggi ~40% dell'altezza schermo, proporzioni SF2.
 - Audio interamente sintetizzato con WebAudio (nessun file audio da licenziare).
 
 ## Rigenerare i volti / il dataset

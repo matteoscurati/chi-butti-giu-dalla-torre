@@ -56,7 +56,7 @@
     st._resultsShown = false;
     FX.reset();
     if (Game.time) Game.time.clear();
-    cam.zoom = 1; cam.zoomTarget = 1; cam.trauma = 0; cam.kickX = 0; cam.kickY = 0;
+    cam.trauma = 0; cam.kickX = 0; cam.kickY = 0;
     Game.tower.corpses.length = 0;
     UI.resetRanking(st.total);
     UI.hideResults();
@@ -117,7 +117,6 @@
     FX.scream(st.falling, v.char.fallQuote);
     A.scream();
     Game.time.slowMo(0.45, 0.4);       // slow-mo drammatico alla caduta
-    cam.setZoom(1.2);                  // zoom punch-in sul perdente
     setPhase("fall");
   }
 
@@ -131,7 +130,6 @@
     FX.flash(0.5, 0.12);
     FX.ko(f.x, cfg.GROUND_Y - 116);
     Game.time.hitStop(isFinal ? 0.16 : 0.09);
-    cam.setZoom(1);                                    // termina il punch-in
     cam.addTrauma(isFinal ? 0.9 : 0.68);
     A.thud();
     Game.tower.addCorpse(f.id, f.x, f.facing);
@@ -315,8 +313,9 @@
     const t = performance.now() / 1000;
 
     if (st.phase === "victory" && st.champion) {
-      // vincitore che esulta con saltelli sulla piattaforma
-      const jump = Math.abs(Math.sin(st.t * 5)) * 24;
+      // vincitore che esulta con saltelli quantizzati al blocco K
+      const K = SP.K;
+      const jump = Math.round(Math.abs(Math.sin(st.t * 5)) * 24 / K) * K;
       SP.drawBig(ctx, st.champion.char.id, st.champion.x, cfg.TOP_Y - jump, 1, "cheer");
     } else {
       // campione/sfidante in cima (idle), con evidenziazione al hover
@@ -324,7 +323,7 @@
       drawTopFighter(ctx, st.right, "right", t);
     }
 
-    // corpo in caduta (frame flail alternati + stretch/wind-streaks)
+    // corpo in caduta (flail a quarti di giro + speed-lines)
     if (st.falling) {
       const f = st.falling;
       SP.drawRotated(ctx, f.id, f.x, f.y, f.facing, f.angle, 1, t, { vx: f.vx, vy: f.vy });
@@ -343,7 +342,7 @@
     if (!f) return;
     const opts = { phase: f.phase };
     if (st.phase === "await" && st.hoverSide === side) {
-      opts.danger = true; opts.glow = "#d04648"; opts.tremble = true;
+      opts.danger = true; opts.tremble = true;
     }
     if (f.rising) {
       // clip: mostra solo la parte sopra la piattaforma (effetto botola)
@@ -361,9 +360,9 @@
   function drawVictoryText(ctx, t) {
     ctx.save();
     ctx.textAlign = "center"; ctx.textBaseline = "middle";
-    const s = 1 + Math.sin(t * 4) * 0.06;
-    ctx.translate(cfg.W / 2, 100);
-    ctx.scale(s, s);
+    // bob verticale a step discreti (niente scale continuo che sfoca i pixel)
+    const bob = [0, -1, -2, -1][Math.floor(t * 6) % 4] * 4;
+    ctx.translate(cfg.W / 2, 100 + bob);
     ctx.font = '48px ' + cfg.FONT;
     ctx.lineWidth = 12; ctx.lineJoin = "round"; ctx.strokeStyle = "#c0293f";
     ctx.strokeText("WINNER!", 0, 0);

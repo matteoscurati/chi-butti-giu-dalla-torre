@@ -71,8 +71,11 @@
     return a;
   };
 
-  // Hash stabile da stringa (per varianti deterministiche per personaggio)
+  // Hash stabile da stringa (per varianti deterministiche per personaggio).
+  // Coercizione a stringa: con input numerici str.length sarebbe undefined e
+  // l'hash degenererebbe in una costante (mattoni/edera tutti uguali).
   U.hash = (str) => {
+    str = String(str);
     let h = 2166136261;
     for (let i = 0; i < str.length; i++) {
       h ^= str.charCodeAt(i);

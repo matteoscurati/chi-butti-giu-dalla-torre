@@ -268,7 +268,7 @@
       id,
       x: px,
       y: cfg.GROUND_Y - 6 - level * 4.0 - U.rand(0, 8),
-      angle: U.sign() * U.rand(1.35, 1.75),   // ~sdraiato
+      angle: U.sign() * Math.PI / 2,           // sdraiato esatto (quarto di giro pixel-puro)
       facing: facing || U.sign(),
       ft: U.pick([0, 0.15]),                   // varia il frame flail nella pila
     });
