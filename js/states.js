@@ -261,17 +261,17 @@
       if (p >= 1) { s.x = st.push.sBaseX; launchVictim(); }
     }
     else if (ph === "fall") {
-      const f = st.falling;
-      f.vy += cfg.GRAVITY * dt;
-      f.omega += Math.sign(f.omega) * 3.0 * dt;   // il tumbling accelera nella caduta
-      f.x += f.vx * dt;
-      f.y += f.vy * dt;
-      f.angle += f.omega * dt;
-      // rimbalza sui bordi del mondo
-      if (f.x < 24) { f.x = 24; f.vx = Math.abs(f.vx) * 0.6; }
-      if (f.x > cfg.W - 24) { f.x = cfg.W - 24; f.vx = -Math.abs(f.vx) * 0.6; }
-      cam.follow(f.y);
-      if (f.y >= cfg.GROUND_Y - SH * 0.32) onImpact();
+      if (st.skip) {
+        // salta la caduta: risolve la fisica in avanti (il corpo atterra dove
+        // sarebbe atterrato) e porta subito la camera al suolo
+        st.skip = false;
+        Game.time.clear();
+        let guard = 0;
+        while (st.falling && guard++ < 2000) stepFall(1 / 60);
+        cam.set(cam.maxY);
+      } else {
+        stepFall(dt);
+      }
     }
     else if (ph === "impact") {
       const dur = 0.6;
@@ -296,6 +296,7 @@
     }
     else if (ph === "victory") {
       cam.set(cfg.DUEL_CAM_Y);
+      if (st.skip) { st.skip = false; st.t = Math.max(st.t, 1.81); }  // salta l'attesa
       if (st.t > (Game.flags.fast ? 0.6 : 1.8) && !st._resultsShown) {
         st._resultsShown = true;
         const ordered = [st.winner].concat(st.eliminated.slice().reverse());
@@ -303,6 +304,21 @@
       }
     }
   };
+
+  // un passo di fisica della caduta (usato dal frame e dal fast-forward di skip)
+  function stepFall(dt) {
+    const f = st.falling;
+    f.vy += cfg.GRAVITY * dt;
+    f.omega += Math.sign(f.omega) * 3.0 * dt;   // il tumbling accelera nella caduta
+    f.x += f.vx * dt;
+    f.y += f.vy * dt;
+    f.angle += f.omega * dt;
+    // rimbalza sui bordi del mondo
+    if (f.x < 24) { f.x = 24; f.vx = Math.abs(f.vx) * 0.6; }
+    if (f.x > cfg.W - 24) { f.x = cfg.W - 24; f.vx = -Math.abs(f.vx) * 0.6; }
+    cam.follow(f.y);
+    if (f.y >= cfg.GROUND_Y - SH * 0.32) onImpact();
+  }
 
   // ---------- render ----------
   SM.render = function (ctx, dt) {

@@ -7,6 +7,15 @@ progetto adotta il [Semantic Versioning](https://semver.org/lang/it/): MAJOR
 per cambi incompatibili al dataset/formato, MINOR per nuove funzionalità,
 PATCH per correzioni. Ogni release pubblicata corrisponde a un tag git `vX.Y.Z`.
 
+## [1.1.1] — 2026-07-03
+
+### Corretto
+- **Clic/Invio ora salta davvero le animazioni**: la caduta non consumava il
+  flag di skip (e il cambio fase lo azzerava), quindi cliccare durante la
+  caduta — l'animazione più lunga — non faceva nulla. Ora lo skip risolve
+  all'istante la fisica della caduta (il corpo atterra dove sarebbe atterrato)
+  e porta la camera al suolo; saltabile anche l'attesa prima dei risultati.
+
 ## [1.1.0] — 2026-07-03
 
 ### Aggiunto
@@ -87,6 +96,7 @@ Prima release pubblica.
   pixel-art con abiti parametrici, torre medievale, fisica di caduta, classifica
   a eliminazione, SFX chiptune WebAudio, funzionante anche da `file://`.
 
+[1.1.1]: https://github.com/matteoscurati/chi-butti-giu-dalla-torre/compare/v1.1.0...v1.1.1
 [1.1.0]: https://github.com/matteoscurati/chi-butti-giu-dalla-torre/compare/v1.0.0...v1.1.0
 [1.0.0]: https://github.com/matteoscurati/chi-butti-giu-dalla-torre/compare/v0.4.0...v1.0.0
 [0.4.0]: https://github.com/matteoscurati/chi-butti-giu-dalla-torre/compare/v0.3.0...v0.4.0
