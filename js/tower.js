@@ -8,7 +8,7 @@
   const T = (Game.tower = {});
   const CX = cfg.TOWER_CX, R = cfg.TOWER_R;
   const TOP = cfg.TOP_Y;                 // superficie piattaforma (piedi)
-  const CACHE_TOP = TOP - 56;            // include i merli posteriori
+  const CACHE_TOP = TOP - 88;            // include i merli posteriori (coprimerlo compreso)
   const CACHE_W = R * 2 + 24;
   const CACHE_H = cfg.GROUND_Y - CACHE_TOP + 4;
 
@@ -76,15 +76,33 @@
     g.fillRect(left - 2, bodyTop, 4, bodyBot - bodyTop);
     g.fillRect(right - 2, bodyTop, 4, bodyBot - bodyTop);
 
-    // --- merli posteriori (dietro ai personaggi) ---
-    const merlonW = 32, gap = 20, my = toLocal(TOP - 52);
-    g.fillStyle = "#6f4f3f";
-    for (let x = left + 2; x < right - merlonW; x += merlonW + gap) {
-      g.fillRect(x, my, merlonW, 44);
-    }
-    g.fillStyle = "#5a3f32";
-    for (let x = left + 2; x < right - merlonW; x += merlonW + gap) {
-      g.fillRect(x, my, merlonW, 6);
+    // --- merli posteriori (dietro ai personaggi): blocchi di mattoni con
+    // giunti di malta e coprimerlo in pietra (stessi grigi della piattaforma) ---
+    const merlonW = 36, mGap = 18, mH = 64, capH = 10, capOver = 4;
+    const my = toLocal(TOP - 72);
+    let mi = 0;
+    for (let x = left + 6; x <= right - merlonW - 6; x += merlonW + mGap, mi++) {
+      const tone = ramp[2][U.hash("merlo" + mi) % bricks.length];  // in ombra, tinta variata
+      // outline scuro (lati e cima; la base è coperta dalla piattaforma)
+      g.fillStyle = "#2c211d";
+      g.fillRect(x - 2, my - 2, merlonW + 4, mH + 2);
+      // corpo in mattoni
+      g.fillStyle = tone;
+      g.fillRect(x, my, merlonW, mH);
+      // giunti di malta: due corsi orizzontali + verticali sfalsati
+      g.fillStyle = mortar;
+      g.fillRect(x, my + 18, merlonW, 2);
+      g.fillRect(x, my + 38, merlonW, 2);
+      g.fillRect(x + 10, my, 2, 18);
+      g.fillRect(x + 24, my + 20, 2, 18);
+      g.fillRect(x + 16, my + 40, 2, mH - 40);
+      // coprimerlo in pietra con sporto laterale e outline
+      g.fillStyle = "#2c211d";
+      g.fillRect(x - capOver - 2, my - capH - 2, merlonW + (capOver + 2) * 2, capH + 2);
+      g.fillStyle = "#8c8494";
+      g.fillRect(x - capOver, my - capH, merlonW + capOver * 2, capH);
+      g.fillStyle = "#6c6478";
+      g.fillRect(x - capOver, my - 4, merlonW + capOver * 2, 4);  // ombra sotto lo sporto
     }
 
     // --- cornicione / mensole appena sotto la piattaforma ---

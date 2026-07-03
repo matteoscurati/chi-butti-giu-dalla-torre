@@ -38,6 +38,9 @@ Qualsiasi server statico va bene (`npx serve`, ecc.).
   primo buttato giù finisce 16°, il vincitore finale è 1° (ed esulta saltellando).
 - Un clic durante le animazioni le **salta**. In basso: pulsante **AUDIO** e link
   ai **CREDITI**.
+- **Tastiera**: `←`/`→` (o `A`/`D`) selezionano il bersaglio, `Invio`/`Spazio`
+  confermano (e avviano/saltano/rigiocano), `Esc` annulla la selezione, `M`
+  attiva/disattiva l'audio.
 
 ## Flag di debug (query string)
 

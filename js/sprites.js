@@ -18,7 +18,7 @@
   const SW = GW * K, SH = GH * K;    // sprite finale 144×224
   // Teste più grandi/riconoscibili (bobblehead SF2). FACE = area volto, HEAD = canvas
   // con cornice+outline, PX = risoluzione della foto quantizzata (posterize senza readback).
-  const FACE = 144, HEAD = 160, PX = 36; // FACE = 4·PX esatto -> pixel foto 4×4 uniformi
+  const FACE = 144, HEAD = 160, PX = 48; // FACE = 3·PX esatto -> pixel foto 3×3 uniformi
   const OUTLINE = "#0c0812";         // outline scuro condiviso (ruolo ink)
   const CX = GW / 2;                 // 18 (griglia di design)
   const HEAD_CY = 64;                // centro testa nello sprite (y dall'alto, coord FINALI)
@@ -33,12 +33,12 @@
   // ---- tile di dither ordinato 4x4 (Bayer) su canvas PROPRIO (non-tainted) ----
   // Compositato in multiply a bassa alpha sulla testa per texture retro; niente
   // dither su outline/feature piccole (si applica solo all'area volto).
-  // Celle 4×4 (tile 16×16) per non spezzare la griglia 4px della foto.
+  // Celle 3×3 (tile 12×12) per non spezzare la griglia 3px della foto.
   let ditherTile = null;
   function getDitherTile() {
     if (ditherTile) return ditherTile;
     const B = [0, 8, 2, 10, 12, 4, 14, 6, 3, 11, 1, 9, 15, 7, 13, 5]; // Bayer 4x4
-    const t = U.makeCanvas(16, 16);
+    const t = U.makeCanvas(12, 12);
     const g = t.getContext("2d");
     for (let i = 0; i < 16; i++) {
       const x = i % 4, y = (i / 4) | 0;
@@ -46,7 +46,7 @@
       const v = B[i] / 15;
       const a = (1 - v) * 0.5;         // 0..0.5
       g.fillStyle = "rgba(20,12,28," + a.toFixed(3) + ")";
-      g.fillRect(x * 4, y * 4, 4, 4);
+      g.fillRect(x * 3, y * 3, 3, 3);
     }
     ditherTile = t;
     return t;

@@ -133,6 +133,43 @@
       if (!Game.flags.gallery) return;
       galleryScroll = Math.max(0, galleryScroll + ev.deltaY);
     }, { passive: true });
+
+    // ---- tastiera: ←/→ (o A/D) seleziona, Invio/Spazio conferma o salta,
+    //      Esc annulla la selezione, M audio on/off ----
+    window.addEventListener("keydown", (ev) => {
+      const k = ev.key;
+      if (k === "m" || k === "M") {
+        const btn = document.getElementById("mute-btn");
+        if (btn) btn.click();
+        return;
+      }
+      const confirm = k === "Enter" || k === " ";
+      if (confirm) ev.preventDefault();       // niente scroll/attivazioni di default
+
+      // titolo: avvia quando il pulsante è pronto
+      if (!started) {
+        const btn = document.getElementById("start-btn");
+        if (confirm && btn && !btn.classList.contains("hidden")) startGame(true);
+        return;
+      }
+      Game.audio.resume();
+
+      // risultati: rivincita
+      const results = document.getElementById("results-screen");
+      if (results && !results.classList.contains("hidden")) {
+        if (confirm) SM.startIntro();
+        return;
+      }
+
+      if (SM.currentPhase() === "await") {
+        if (k === "ArrowLeft" || k === "a" || k === "A") { ev.preventDefault(); UI.onHover("left"); }
+        else if (k === "ArrowRight" || k === "d" || k === "D") { ev.preventDefault(); UI.onHover("right"); }
+        else if (k === "Escape") UI.onHover(null);
+        else if (confirm && SM.st.hoverSide) SM.pickSide(SM.st.hoverSide);
+      } else if (confirm) {
+        SM.st.skip = true;                    // salta l'animazione corrente, come il clic
+      }
+    });
   }
 
   // ---- gallery ----
