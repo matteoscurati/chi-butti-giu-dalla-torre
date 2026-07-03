@@ -7,6 +7,19 @@ progetto adotta il [Semantic Versioning](https://semver.org/lang/it/): MAJOR
 per cambi incompatibili al dataset/formato, MINOR per nuove funzionalità,
 PATCH per correzioni. Ogni release pubblicata corrisponde a un tag git `vX.Y.Z`.
 
+## [1.1.0] — 2026-07-03
+
+### Aggiunto
+- **Pulsante "▼ SCARICA PNG"** dedicato ed evidente nella schermata risultati:
+  scarica sempre direttamente l'immagine della classifica (niente share sheet);
+  CONDIVIDI resta per la condivisione nativa.
+- **Supporto mobile**: layout a colonna con classifica sotto il gioco (≤820px),
+  canvas che scala fino a 0.5× (blocchi 2px, sempre pixel-perfect), HUD e
+  overlay compatti, `touch-action: manipulation`.
+- **Controlli touch**: il primo tap seleziona il bersaglio (stessa
+  evidenziazione dell'hover), il secondo tap conferma la spinta; un tap sul
+  vuoto deseleziona. Mouse e tastiera invariati.
+
 ## [1.0.0] — 2026-07-03
 
 Prima release pubblica.
@@ -74,6 +87,7 @@ Prima release pubblica.
   pixel-art con abiti parametrici, torre medievale, fisica di caduta, classifica
   a eliminazione, SFX chiptune WebAudio, funzionante anche da `file://`.
 
+[1.1.0]: https://github.com/matteoscurati/chi-butti-giu-dalla-torre/compare/v1.0.0...v1.1.0
 [1.0.0]: https://github.com/matteoscurati/chi-butti-giu-dalla-torre/compare/v0.4.0...v1.0.0
 [0.4.0]: https://github.com/matteoscurati/chi-butti-giu-dalla-torre/compare/v0.3.0...v0.4.0
 [0.3.0]: https://github.com/matteoscurati/chi-butti-giu-dalla-torre/compare/v0.2.0...v0.3.0

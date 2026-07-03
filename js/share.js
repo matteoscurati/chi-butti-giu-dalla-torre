@@ -143,21 +143,43 @@
   }
 
   // Condivide la classifica finale. Risolve con 'shared' | 'downloaded' |
-  // 'copied' | 'cancelled' (share sheet annullato dall'utente); rigetta solo
-  // per errori imprevisti.
-  S.shareRanking = async function (winner, ordered) {
+  // rende la card e prova a produrne il blob PNG. Con foto tainted (file://)
+  // il SecurityError arriva sincrono nel try; ritorna null → fallback testo.
+  async function renderBlob(winner, ordered) {
     await loadFonts();
     const canvas = renderCard(winner, ordered);
-
-    // 1) PNG dal canvas: con foto tainted (file://) il SecurityError arriva
-    //    sincrono nel try; blob resta null → si passa al fallback testo
-    let blob = null;
     try {
-      blob = await new Promise((res, rej) => {
+      return await new Promise((res, rej) => {
         try { canvas.toBlob((b) => (b ? res(b) : rej(new Error("toBlob null"))), "image/png"); }
         catch (e) { rej(e); }
       });
-    } catch (e) { blob = null; }
+    } catch (e) { return null; }
+  }
+
+  function downloadBlob(blob) {
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = FILE_NAME;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 2000);
+  }
+
+  // Scarica SEMPRE il PNG (nessuno share sheet). Risolve con 'downloaded';
+  // se il PNG è impossibile (canvas tainted da file://) copia il testo → 'copied'.
+  S.downloadRanking = async function (winner, ordered) {
+    const blob = await renderBlob(winner, ordered);
+    if (blob) { downloadBlob(blob); return "downloaded"; }
+    await copyText(rankingText(ordered));
+    return "copied";
+  };
+
+  // 'copied' | 'cancelled' (share sheet annullato dall'utente); rigetta solo
+  // per errori imprevisti.
+  S.shareRanking = async function (winner, ordered) {
+    const blob = await renderBlob(winner, ordered);
 
     if (blob) {
       // 2) share sheet nativo con allegato (mobile). Solo con user activation
@@ -174,15 +196,8 @@
         if (e && e.name === "AbortError") return "cancelled";
         // share negato/fallito per altro motivo: si prosegue col download
       }
-      // 3) download diretto del PNG
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = FILE_NAME;
-      document.body.appendChild(a);
-      a.click();
-      a.remove();
-      setTimeout(() => URL.revokeObjectURL(url), 2000);
+      // 3) niente share sheet: download diretto del PNG
+      downloadBlob(blob);
       return "downloaded";
     }
 

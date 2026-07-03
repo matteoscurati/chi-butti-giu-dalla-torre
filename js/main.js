@@ -27,9 +27,10 @@
     if (availW <= 0 || availH <= 0) return;
     const border = 8; // 4px per lato di #screen
     // scala a passi di 0.25: con blocchi d'arte da 4px, ogni quarto rende
-    // il blocco a dimensione intera (5/6/7px) restando pixel-perfect e
+    // il blocco a dimensione intera (2/3/5/6px...) restando pixel-perfect e
     // sfruttando meglio lo schermo rispetto alla sola scala intera.
-    const scale = Math.max(1, Math.floor(
+    // Minimo 0.5 (blocchi 2px): sui telefoni il canvas 640 deve poter scendere.
+    const scale = Math.max(0.5, Math.floor(
       4 * Math.min((availW - border) / cfg.W, (availH - border) / cfg.H)
     ) / 4);
     screen.style.width = (cfg.W * scale) + "px";
@@ -98,10 +99,25 @@
   }
 
   // ---- input ----
+  // Su touch niente hover: il PRIMO tap seleziona il bersaglio (stessa
+  // evidenziazione dell'hover), il SECONDO tap sullo stesso conferma la spinta.
+  let lastPointerTouch = false;
+
   function wireInput() {
+    window.addEventListener("pointerdown", (ev) => {
+      lastPointerTouch = ev.pointerType === "touch";
+    }, { capture: true, passive: true });
+
     UI.onStart = () => startGame(true);
     UI.onRematch = () => { SM.startIntro(); };
-    UI.onPick = (side) => SM.pickSide(side);
+    UI.onPick = (side) => {
+      // touch sul nameplate: primo tap seleziona, secondo conferma
+      if (lastPointerTouch && SM.currentPhase() === "await" && SM.st.hoverSide !== side) {
+        UI.onHover(side);
+        return;
+      }
+      SM.pickSide(side);
+    };
     UI.onHover = (side) => {
       if (SM.currentPhase() !== "await") return;
       SM.st.hoverSide = side;
@@ -117,6 +133,7 @@
 
     canvas.addEventListener("mousemove", (ev) => {
       if (!started) return;
+      if (lastPointerTouch) return;   // mousemove sintetico post-tap: ignorato
       const w = toWorld(ev);
       SM.hover(w.x, w.y);
     });
@@ -124,9 +141,15 @@
       if (!started) { return; }
       Game.audio.resume();
       const w = toWorld(ev);
+      // touch sul canvas: primo tap seleziona, tap su vuoto deseleziona
+      if (lastPointerTouch && SM.currentPhase() === "await") {
+        const side = SM.sideAt(w.x, w.y);
+        if (side && SM.st.hoverSide !== side) { UI.onHover(side); return; }
+        if (!side && SM.st.hoverSide) { UI.onHover(null); return; }
+      }
       SM.click(w.x, w.y);
     });
-    canvas.addEventListener("mouseleave", () => { if (started) SM.hover(-999, -999); });
+    canvas.addEventListener("mouseleave", () => { if (started && !lastPointerTouch) SM.hover(-999, -999); });
 
     // scroll gallery
     window.addEventListener("wheel", (ev) => {

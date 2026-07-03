@@ -33,6 +33,7 @@
       winnerCanvas: document.getElementById("winner-canvas"),
       finalRanking: document.getElementById("final-ranking"),
       rematchBtn: document.getElementById("rematch-btn"),
+      downloadBtn: document.getElementById("download-btn"),
       shareBtn: document.getElementById("share-btn"),
       rankingList: document.getElementById("ranking-list"),
       muteBtn: document.getElementById("mute-btn"),
@@ -47,23 +48,9 @@
     }
     el.startBtn.addEventListener("click", () => UI.onStart && UI.onStart());
     el.rematchBtn.addEventListener("click", () => UI.onRematch && UI.onRematch());
-    el.shareBtn.addEventListener("click", () => {
-      if (!lastResults) return;
-      el.shareBtn.disabled = true;
-      el.shareBtn.textContent = "…";
-      Game.share.shareRanking(lastResults.winner, lastResults.ordered)
-        .then((res) => {
-          const msg = { shared: "CONDIVISA!", downloaded: "SCARICATA!", copied: "TESTO COPIATO!" }[res];
-          if (!msg) { restoreShareBtn(); return; }   // 'cancelled': nessun feedback
-          el.shareBtn.textContent = msg;
-          setTimeout(restoreShareBtn, 2000);
-        })
-        .catch((e) => {
-          console.warn("Condivisione fallita:", e);
-          el.shareBtn.textContent = "ERRORE";
-          setTimeout(restoreShareBtn, 2000);
-        });
-    });
+    // pulsanti export: SCARICA PNG = download diretto; CONDIVIDI = share sheet
+    bindExport(el.downloadBtn, (w, o) => Game.share.downloadRanking(w, o));
+    bindExport(el.shareBtn, (w, o) => Game.share.shareRanking(w, o));
     el.muteBtn.addEventListener("click", () => {
       const m = Game.audio.toggleMute();
       el.muteBtn.textContent = "AUDIO: " + (m ? "OFF" : "ON");
@@ -159,9 +146,27 @@
 
   UI.resetRanking = function (total) { UI.buildRanking(total); };
 
-  function restoreShareBtn() {
-    el.shareBtn.textContent = "CONDIVIDI";
-    el.shareBtn.disabled = false;
+  // collega un pulsante di export (download/share) con stato e feedback
+  function bindExport(btn, action) {
+    const label = btn.textContent;   // etichetta originale (dal markup)
+    const restore = () => { btn.textContent = label; btn.disabled = false; };
+    btn.addEventListener("click", () => {
+      if (!lastResults) return;
+      btn.disabled = true;
+      btn.textContent = "…";
+      action(lastResults.winner, lastResults.ordered)
+        .then((res) => {
+          const msg = { shared: "CONDIVISA!", downloaded: "SCARICATA!", copied: "TESTO COPIATO!" }[res];
+          if (!msg) { restore(); return; }   // 'cancelled': nessun feedback
+          btn.textContent = msg;
+          setTimeout(restore, 2000);
+        })
+        .catch((e) => {
+          console.warn("Export fallito:", e);
+          btn.textContent = "ERRORE";
+          setTimeout(restore, 2000);
+        });
+    });
   }
 
   // ---- risultati ----

@@ -214,6 +214,7 @@
     }
     return null;
   }
+  SM.sideAt = fighterAt;   // hit-test esposto per il modello touch (main.js)
 
   // ---------- update ----------
   SM.update = function (dt) {
