@@ -7,6 +7,20 @@ progetto adotta il [Semantic Versioning](https://semver.org/lang/it/): MAJOR
 per cambi incompatibili al dataset/formato, MINOR per nuove funzionalità,
 PATCH per correzioni. Ogni release pubblicata corrisponde a un tag git `vX.Y.Z`.
 
+## [1.2.1] — 2026-07-03
+
+### Corretto
+- **Pulsanti del footer e dei risultati tutti della stessa altezza**: emoji (⏩)
+  e glifi (▼) gonfiavano la line-box, e il link CREDITI aveva metriche diverse
+  dai `<button>` — ora altezza fissa con centratura flex.
+- **Mobile: il canvas riempie lo schermo**: sotto 1× la scala è continua
+  (niente più canvas da 320px su schermi da 390-430) e il wrapper collassa sul
+  contenuto (via lo spazio morto sotto il gioco).
+- Il canvas ora può **ricrescere** dopo un rimpicciolimento della finestra: la
+  larghezza disponibile era misurata circolarmente dal contenuto stesso.
+- Target touch più grandi nel footer su mobile; niente selezione testo/callout
+  iOS sul gioco; `theme-color` per la barra del browser mobile.
+
 ## [1.2.0] — 2026-07-03
 
 ### Aggiunto
@@ -118,6 +132,7 @@ Prima release pubblica.
   pixel-art con abiti parametrici, torre medievale, fisica di caduta, classifica
   a eliminazione, SFX chiptune WebAudio, funzionante anche da `file://`.
 
+[1.2.1]: https://github.com/matteoscurati/chi-butti-giu-dalla-torre/compare/v1.2.0...v1.2.1
 [1.2.0]: https://github.com/matteoscurati/chi-butti-giu-dalla-torre/compare/v1.1.2...v1.2.0
 [1.1.2]: https://github.com/matteoscurati/chi-butti-giu-dalla-torre/compare/v1.1.1...v1.1.2
 [1.1.1]: https://github.com/matteoscurati/chi-butti-giu-dalla-torre/compare/v1.1.0...v1.1.1

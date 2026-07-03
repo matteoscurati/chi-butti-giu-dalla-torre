@@ -23,16 +23,20 @@
   // ---- scala intera del canvas (pixel-perfect) ----
   function fitCanvas() {
     if (!wrap || !screen) return;
-    const availW = wrap.clientWidth, availH = wrap.clientHeight;
+    // su mobile (layout a colonna) il wrapper è height:auto e collassa sul
+    // canvas: l'altezza disponibile si stima dal viewport, non dal wrapper
+    const mobile = window.matchMedia && window.matchMedia("(max-width: 820px)").matches;
+    const availW = wrap.clientWidth;
+    const availH = mobile ? Math.max(280, window.innerHeight - 160) : wrap.clientHeight;
     if (availW <= 0 || availH <= 0) return;
     const border = 8; // 4px per lato di #screen
-    // scala a passi di 0.25: con blocchi d'arte da 4px, ogni quarto rende
-    // il blocco a dimensione intera (2/3/5/6px...) restando pixel-perfect e
-    // sfruttando meglio lo schermo rispetto alla sola scala intera.
-    // Minimo 0.5 (blocchi 2px): sui telefoni il canvas 640 deve poter scendere.
-    const scale = Math.max(0.5, Math.floor(
-      4 * Math.min((availW - border) / cfg.W, (availH - border) / cfg.H)
-    ) / 4);
+    const raw = Math.min((availW - border) / cfg.W, (availH - border) / cfg.H);
+    // ≥1: passi di 0.25 — con blocchi d'arte da 4px ogni quarto rende il blocco
+    // a dimensione intera (pixel-perfect). <1 (telefoni): scala continua, così
+    // il canvas riempie lo schermo; il downscale nearest è accettabile.
+    const scale = raw >= 1
+      ? Math.floor(4 * raw) / 4
+      : Math.max(0.35, Math.floor(raw * 100) / 100);
     screen.style.width = (cfg.W * scale) + "px";
     screen.style.height = (cfg.H * scale) + "px";
     document.documentElement.style.setProperty("--scale", scale);
