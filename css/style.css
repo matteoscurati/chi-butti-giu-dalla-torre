@@ -314,6 +314,34 @@ body::after {
 #final-ranking li img { width: 20px; height: 20px; image-rendering: pixelated; border: 1px solid #000; }
 #final-ranking li.top1 { color: var(--gold); font-size: 11px; }
 
+.results-actions {
+  margin-top: 22px;
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
+/* il margin-top lo dà il wrapper; font ridotto per stare affiancati nei 460px */
+.results-actions .arcade-btn {
+  margin-top: 0;
+  font-size: 11px;
+  padding: 14px 16px;
+}
+
+/* variante secondaria: niente blink (resta solo su RIVINCITA), outline oro su panel */
+.arcade-btn-alt {
+  animation: none;
+  color: var(--text);
+  background: var(--panel);
+  border-color: var(--gold2);
+}
+.arcade-btn-alt:hover { filter: none; border-color: var(--gold); color: var(--gold); }
+.arcade-btn-alt:disabled {
+  cursor: default;
+  filter: brightness(0.6) saturate(0.6);
+  border-color: #4b356f;
+  color: var(--dim);
+}
+
 /* ---------------- Footer ---------------- */
 #footer {
   width: 100%;
