@@ -164,7 +164,18 @@
     document.body.appendChild(a);
     a.click();
     a.remove();
-    setTimeout(() => URL.revokeObjectURL(url), 2000);
+    // revoke tardivo: con "chiedi dove salvare" attivo il download parte solo
+    // alla conferma dell'utente, e un revoke precoce lo romperebbe
+    setTimeout(() => URL.revokeObjectURL(url), 60000);
+  }
+
+  // Share sheet solo su dispositivi touch/mobile: su desktop (es. Chromium su
+  // macOS) il file passato allo share sheet nativo viene materializzato con un
+  // nome temporaneo che PERDE l'estensione .png — meglio il download diretto,
+  // dove a.download garantisce il nome esatto.
+  function isTouchDevice() {
+    return navigator.maxTouchPoints > 0 &&
+      window.matchMedia && window.matchMedia("(pointer: coarse)").matches;
   }
 
   // Scarica SEMPRE il PNG (nessuno share sheet). Risolve con 'downloaded';
@@ -182,13 +193,14 @@
     const blob = await renderBlob(winner, ordered);
 
     if (blob) {
-      // 2) share sheet nativo con allegato (mobile). Solo con user activation
-      //    ancora attiva: per spec share() la richiede, e senza la promise può
-      //    restare pendente per sempre (pulsante bloccato su "…")
+      // 2) share sheet nativo con allegato: SOLO su touch/mobile (vedi
+      //    isTouchDevice) e solo con user activation ancora attiva: per spec
+      //    share() la richiede, e senza la promise può restare pendente per
+      //    sempre (pulsante bloccato su "…")
       try {
         const file = new File([blob], FILE_NAME, { type: "image/png" });
         const activated = !navigator.userActivation || navigator.userActivation.isActive;
-        if (activated && navigator.canShare && navigator.canShare({ files: [file] })) {
+        if (isTouchDevice() && activated && navigator.canShare && navigator.canShare({ files: [file] })) {
           await navigator.share({ files: [file], title: TITLE, text: shortText(ordered) });
           return "shared";
         }

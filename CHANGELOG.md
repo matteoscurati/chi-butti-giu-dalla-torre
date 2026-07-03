@@ -7,6 +7,17 @@ progetto adotta il [Semantic Versioning](https://semver.org/lang/it/): MAJOR
 per cambi incompatibili al dataset/formato, MINOR per nuove funzionalità,
 PATCH per correzioni. Ogni release pubblicata corrisponde a un tag git `vX.Y.Z`.
 
+## [1.1.2] — 2026-07-03
+
+### Corretto
+- **Il PNG scaricato ora ha sempre nome ed estensione corretti**: su desktop lo
+  share sheet nativo (es. Chromium/macOS) materializza il file condiviso con un
+  nome temporaneo senza `.png` — ora CONDIVIDI usa lo share sheet solo su
+  dispositivi touch/mobile e su desktop scarica direttamente.
+- Il blob URL del download viene revocato dopo 60s invece di 2s: con "chiedi
+  dove salvare" attivo il download parte alla conferma e un revoke precoce lo
+  avrebbe rotto.
+
 ## [1.1.1] — 2026-07-03
 
 ### Corretto
@@ -96,6 +107,7 @@ Prima release pubblica.
   pixel-art con abiti parametrici, torre medievale, fisica di caduta, classifica
   a eliminazione, SFX chiptune WebAudio, funzionante anche da `file://`.
 
+[1.1.2]: https://github.com/matteoscurati/chi-butti-giu-dalla-torre/compare/v1.1.1...v1.1.2
 [1.1.1]: https://github.com/matteoscurati/chi-butti-giu-dalla-torre/compare/v1.1.0...v1.1.1
 [1.1.0]: https://github.com/matteoscurati/chi-butti-giu-dalla-torre/compare/v1.0.0...v1.1.0
 [1.0.0]: https://github.com/matteoscurati/chi-butti-giu-dalla-torre/compare/v0.4.0...v1.0.0
